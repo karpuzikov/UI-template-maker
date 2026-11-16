@@ -4,11 +4,11 @@
   "targetPlatform": "desktop",
   "canvas": {
     "widthPx": 720,
-    "heightPx": 708,
-    "columns": 360,
-    "rows": 354,
-    "cellWidthPx": 2,
-    "cellHeightPx": 2,
+    "heightPx": 710,
+    "columns": 144,
+    "rows": 142,
+    "cellWidthPx": 5,
+    "cellHeightPx": 5,
     "backgroundColor": "#0f1115"
   },
   "coordinateSystem": "Origin top-left. Grid column/row are zero-based. px = grid × cell size. Higher zIndex is drawn on top.",
@@ -19,8 +19,8 @@
       "grid": {
         "column": 0,
         "row": 0,
-        "columnSpan": 360,
-        "rowSpan": 354
+        "columnSpan": 144,
+        "rowSpan": 142
       },
       "zIndex": 1,
       "attributes": {
@@ -36,10 +36,10 @@
       "type": "heading",
       "name": "Release title",
       "grid": {
-        "column": 2,
-        "row": 2,
-        "columnSpan": 265,
-        "rowSpan": 14
+        "column": 1,
+        "row": 1,
+        "columnSpan": 106,
+        "rowSpan": 6
       },
       "zIndex": 2,
       "attributes": {
@@ -53,10 +53,10 @@
       "type": "icon-button",
       "name": "Close button",
       "grid": {
-        "column": 340,
-        "row": 5,
-        "columnSpan": 15,
-        "rowSpan": 15
+        "column": 136,
+        "row": 2,
+        "columnSpan": 6,
+        "rowSpan": 6
       },
       "zIndex": 3,
       "attributes": {
@@ -72,10 +72,10 @@
       "type": "text-label",
       "name": "Release status",
       "grid": {
-        "column": 3,
-        "row": 17,
-        "columnSpan": 124,
-        "rowSpan": 8
+        "column": 1,
+        "row": 7,
+        "columnSpan": 49,
+        "rowSpan": 3
       },
       "zIndex": 4,
       "attributes": {
@@ -88,10 +88,10 @@
       "type": "text-label",
       "name": "Release format",
       "grid": {
-        "column": 4,
-        "row": 29,
-        "columnSpan": 31,
-        "rowSpan": 7
+        "column": 1,
+        "row": 12,
+        "columnSpan": 13,
+        "rowSpan": 3
       },
       "zIndex": 5,
       "attributes": {
@@ -105,10 +105,10 @@
       "type": "chip-tag",
       "name": "Log score badge",
       "grid": {
-        "column": 35,
-        "row": 28,
-        "columnSpan": 31,
-        "rowSpan": 8
+        "column": 14,
+        "row": 11,
+        "columnSpan": 12,
+        "rowSpan": 3
       },
       "zIndex": 6,
       "attributes": {
@@ -125,10 +125,10 @@
       "type": "chip-tag",
       "name": "CUE badge",
       "grid": {
-        "column": 69,
-        "row": 28,
-        "columnSpan": 16,
-        "rowSpan": 8
+        "column": 28,
+        "row": 11,
+        "columnSpan": 6,
+        "rowSpan": 3
       },
       "zIndex": 7,
       "attributes": {
@@ -145,10 +145,10 @@
       "type": "text-label",
       "name": "Log file line",
       "grid": {
-        "column": 4,
-        "row": 37,
-        "columnSpan": 153,
-        "rowSpan": 6
+        "column": 2,
+        "row": 15,
+        "columnSpan": 61,
+        "rowSpan": 2
       },
       "zIndex": 8,
       "attributes": {
@@ -161,10 +161,10 @@
       "type": "button",
       "name": "Keep release button",
       "grid": {
-        "column": 7,
-        "row": 48,
-        "columnSpan": 46,
-        "rowSpan": 15
+        "column": 3,
+        "row": 19,
+        "columnSpan": 18,
+        "rowSpan": 6
       },
       "zIndex": 9,
       "attributes": {
@@ -181,10 +181,10 @@
       "type": "button",
       "name": "Ignore release button",
       "grid": {
-        "column": 57,
-        "row": 48,
-        "columnSpan": 54,
-        "rowSpan": 15
+        "column": 23,
+        "row": 19,
+        "columnSpan": 22,
+        "rowSpan": 6
       },
       "zIndex": 10,
       "attributes": {
@@ -201,10 +201,10 @@
       "type": "button",
       "name": "Album group button",
       "grid": {
-        "column": 286,
-        "row": 48,
-        "columnSpan": 54,
-        "rowSpan": 17
+        "column": 114,
+        "row": 19,
+        "columnSpan": 22,
+        "rowSpan": 7
       },
       "zIndex": 11,
       "attributes": {
@@ -221,10 +221,10 @@
       "type": "icon-button",
       "name": "Open folder button",
       "grid": {
-        "column": 7,
-        "row": 70,
-        "columnSpan": 15,
-        "rowSpan": 15
+        "column": 3,
+        "row": 28,
+        "columnSpan": 6,
+        "rowSpan": 6
       },
       "zIndex": 12,
       "attributes": {
@@ -239,10 +239,10 @@
       "type": "text-input",
       "name": "Folder path",
       "grid": {
-        "column": 26,
-        "row": 69,
-        "columnSpan": 314,
-        "rowSpan": 16
+        "column": 10,
+        "row": 28,
+        "columnSpan": 126,
+        "rowSpan": 6
       },
       "zIndex": 13,
       "attributes": {
@@ -261,10 +261,10 @@
       "type": "paragraph",
       "name": "Selection explanation",
       "grid": {
-        "column": 3,
-        "row": 89,
-        "columnSpan": 334,
-        "rowSpan": 17
+        "column": 1,
+        "row": 36,
+        "columnSpan": 133,
+        "rowSpan": 7
       },
       "zIndex": 14,
       "attributes": {
@@ -279,23 +279,23 @@
       "name": "Header divider",
       "grid": {
         "column": 0,
-        "row": 109,
-        "columnSpan": 360,
+        "row": 44,
+        "columnSpan": 144,
         "rowSpan": 1
       },
       "zIndex": 15,
       "attributes": {
-        "backgroundColor": "#2b2e35"
+        "backgroundColor": "#1f2228"
       }
     },
     {
       "type": "heading",
       "name": "Tracks heading",
       "grid": {
-        "column": 3,
-        "row": 113,
-        "columnSpan": 44,
-        "rowSpan": 9
+        "column": 1,
+        "row": 45,
+        "columnSpan": 18,
+        "rowSpan": 4
       },
       "zIndex": 16,
       "attributes": {
@@ -309,10 +309,10 @@
       "type": "text-label",
       "name": "Track 1 number",
       "grid": {
-        "column": 9,
-        "row": 129,
-        "columnSpan": 11,
-        "rowSpan": 9
+        "column": 4,
+        "row": 52,
+        "columnSpan": 4,
+        "rowSpan": 4
       },
       "zIndex": 17,
       "attributes": {
@@ -326,10 +326,10 @@
       "type": "text-label",
       "name": "Track 1 title",
       "grid": {
-        "column": 19,
-        "row": 129,
-        "columnSpan": 119,
-        "rowSpan": 9
+        "column": 8,
+        "row": 52,
+        "columnSpan": 47,
+        "rowSpan": 4
       },
       "zIndex": 18,
       "attributes": {
@@ -342,10 +342,10 @@
       "type": "text-label",
       "name": "Track 1 duration",
       "grid": {
-        "column": 139,
-        "row": 129,
-        "columnSpan": 22,
-        "rowSpan": 9
+        "column": 56,
+        "row": 52,
+        "columnSpan": 9,
+        "rowSpan": 4
       },
       "zIndex": 19,
       "attributes": {
@@ -359,10 +359,10 @@
       "type": "text-label",
       "name": "Track 1 note",
       "grid": {
-        "column": 196,
-        "row": 130,
-        "columnSpan": 153,
-        "rowSpan": 8
+        "column": 78,
+        "row": 52,
+        "columnSpan": 61,
+        "rowSpan": 3
       },
       "zIndex": 20,
       "attributes": {
@@ -376,24 +376,24 @@
       "type": "divider",
       "name": "Track 1 divider",
       "grid": {
-        "column": 7,
-        "row": 144,
-        "columnSpan": 347,
+        "column": 3,
+        "row": 57,
+        "columnSpan": 139,
         "rowSpan": 1
       },
       "zIndex": 21,
       "attributes": {
-        "backgroundColor": "#2b2e35"
+        "backgroundColor": "#1f2228"
       }
     },
     {
       "type": "text-label",
       "name": "Track 2 number",
       "grid": {
-        "column": 9,
-        "row": 150,
-        "columnSpan": 11,
-        "rowSpan": 9
+        "column": 4,
+        "row": 60,
+        "columnSpan": 4,
+        "rowSpan": 4
       },
       "zIndex": 22,
       "attributes": {
@@ -407,10 +407,10 @@
       "type": "text-label",
       "name": "Track 2 title",
       "grid": {
-        "column": 19,
-        "row": 150,
-        "columnSpan": 119,
-        "rowSpan": 9
+        "column": 8,
+        "row": 60,
+        "columnSpan": 47,
+        "rowSpan": 4
       },
       "zIndex": 23,
       "attributes": {
@@ -423,10 +423,10 @@
       "type": "text-label",
       "name": "Track 2 duration",
       "grid": {
-        "column": 139,
-        "row": 150,
-        "columnSpan": 22,
-        "rowSpan": 9
+        "column": 56,
+        "row": 60,
+        "columnSpan": 9,
+        "rowSpan": 4
       },
       "zIndex": 24,
       "attributes": {
@@ -440,10 +440,10 @@
       "type": "text-label",
       "name": "Track 2 note",
       "grid": {
-        "column": 196,
-        "row": 150,
-        "columnSpan": 153,
-        "rowSpan": 8
+        "column": 78,
+        "row": 60,
+        "columnSpan": 61,
+        "rowSpan": 3
       },
       "zIndex": 25,
       "attributes": {
@@ -457,24 +457,24 @@
       "type": "divider",
       "name": "Track 2 divider",
       "grid": {
-        "column": 7,
-        "row": 164,
-        "columnSpan": 347,
+        "column": 3,
+        "row": 66,
+        "columnSpan": 139,
         "rowSpan": 1
       },
       "zIndex": 26,
       "attributes": {
-        "backgroundColor": "#2b2e35"
+        "backgroundColor": "#1f2228"
       }
     },
     {
       "type": "text-label",
       "name": "Track 3 number",
       "grid": {
-        "column": 9,
-        "row": 170,
-        "columnSpan": 11,
-        "rowSpan": 9
+        "column": 4,
+        "row": 68,
+        "columnSpan": 4,
+        "rowSpan": 4
       },
       "zIndex": 27,
       "attributes": {
@@ -488,10 +488,10 @@
       "type": "text-label",
       "name": "Track 3 title",
       "grid": {
-        "column": 19,
-        "row": 170,
-        "columnSpan": 119,
-        "rowSpan": 9
+        "column": 8,
+        "row": 68,
+        "columnSpan": 47,
+        "rowSpan": 4
       },
       "zIndex": 28,
       "attributes": {
@@ -504,10 +504,10 @@
       "type": "text-label",
       "name": "Track 3 duration",
       "grid": {
-        "column": 139,
-        "row": 170,
-        "columnSpan": 22,
-        "rowSpan": 9
+        "column": 56,
+        "row": 68,
+        "columnSpan": 9,
+        "rowSpan": 4
       },
       "zIndex": 29,
       "attributes": {
@@ -521,10 +521,10 @@
       "type": "chip-tag",
       "name": "Track 3 remixes badge",
       "grid": {
-        "column": 165,
-        "row": 169,
-        "columnSpan": 31,
-        "rowSpan": 12
+        "column": 66,
+        "row": 68,
+        "columnSpan": 12,
+        "rowSpan": 5
       },
       "zIndex": 30,
       "attributes": {
@@ -541,10 +541,10 @@
       "type": "text-label",
       "name": "Track 3 note",
       "grid": {
-        "column": 196,
-        "row": 171,
-        "columnSpan": 153,
-        "rowSpan": 8
+        "column": 78,
+        "row": 68,
+        "columnSpan": 61,
+        "rowSpan": 3
       },
       "zIndex": 31,
       "attributes": {
@@ -558,24 +558,24 @@
       "type": "divider",
       "name": "Track 3 divider",
       "grid": {
-        "column": 7,
-        "row": 184,
-        "columnSpan": 347,
+        "column": 3,
+        "row": 74,
+        "columnSpan": 139,
         "rowSpan": 1
       },
       "zIndex": 32,
       "attributes": {
-        "backgroundColor": "#2b2e35"
+        "backgroundColor": "#1f2228"
       }
     },
     {
       "type": "text-label",
       "name": "Track 4 number",
       "grid": {
-        "column": 9,
-        "row": 191,
-        "columnSpan": 11,
-        "rowSpan": 9
+        "column": 4,
+        "row": 76,
+        "columnSpan": 4,
+        "rowSpan": 4
       },
       "zIndex": 33,
       "attributes": {
@@ -589,10 +589,10 @@
       "type": "text-label",
       "name": "Track 4 title",
       "grid": {
-        "column": 19,
-        "row": 191,
-        "columnSpan": 119,
-        "rowSpan": 9
+        "column": 8,
+        "row": 76,
+        "columnSpan": 47,
+        "rowSpan": 4
       },
       "zIndex": 34,
       "attributes": {
@@ -605,10 +605,10 @@
       "type": "text-label",
       "name": "Track 4 duration",
       "grid": {
-        "column": 139,
-        "row": 191,
-        "columnSpan": 22,
-        "rowSpan": 9
+        "column": 56,
+        "row": 76,
+        "columnSpan": 9,
+        "rowSpan": 4
       },
       "zIndex": 35,
       "attributes": {
@@ -622,10 +622,10 @@
       "type": "chip-tag",
       "name": "Track 4 remixes badge",
       "grid": {
-        "column": 165,
-        "row": 189,
-        "columnSpan": 31,
-        "rowSpan": 12
+        "column": 66,
+        "row": 76,
+        "columnSpan": 12,
+        "rowSpan": 5
       },
       "zIndex": 36,
       "attributes": {
@@ -642,10 +642,10 @@
       "type": "text-label",
       "name": "Track 4 note",
       "grid": {
-        "column": 196,
-        "row": 191,
-        "columnSpan": 153,
-        "rowSpan": 8
+        "column": 78,
+        "row": 76,
+        "columnSpan": 61,
+        "rowSpan": 3
       },
       "zIndex": 37,
       "attributes": {
@@ -659,24 +659,24 @@
       "type": "divider",
       "name": "Track 4 divider",
       "grid": {
-        "column": 7,
-        "row": 205,
-        "columnSpan": 347,
+        "column": 3,
+        "row": 82,
+        "columnSpan": 139,
         "rowSpan": 1
       },
       "zIndex": 38,
       "attributes": {
-        "backgroundColor": "#2b2e35"
+        "backgroundColor": "#1f2228"
       }
     },
     {
       "type": "text-label",
       "name": "Track 5 number",
       "grid": {
-        "column": 9,
-        "row": 211,
-        "columnSpan": 11,
-        "rowSpan": 9
+        "column": 4,
+        "row": 84,
+        "columnSpan": 4,
+        "rowSpan": 4
       },
       "zIndex": 39,
       "attributes": {
@@ -690,10 +690,10 @@
       "type": "text-label",
       "name": "Track 5 title",
       "grid": {
-        "column": 19,
-        "row": 211,
-        "columnSpan": 119,
-        "rowSpan": 9
+        "column": 8,
+        "row": 84,
+        "columnSpan": 47,
+        "rowSpan": 4
       },
       "zIndex": 40,
       "attributes": {
@@ -706,10 +706,10 @@
       "type": "text-label",
       "name": "Track 5 duration",
       "grid": {
-        "column": 139,
-        "row": 211,
-        "columnSpan": 22,
-        "rowSpan": 9
+        "column": 56,
+        "row": 84,
+        "columnSpan": 9,
+        "rowSpan": 4
       },
       "zIndex": 41,
       "attributes": {
@@ -723,10 +723,10 @@
       "type": "text-label",
       "name": "Track 5 note",
       "grid": {
-        "column": 196,
-        "row": 212,
-        "columnSpan": 153,
-        "rowSpan": 8
+        "column": 78,
+        "row": 85,
+        "columnSpan": 61,
+        "rowSpan": 3
       },
       "zIndex": 42,
       "attributes": {
@@ -740,24 +740,24 @@
       "type": "divider",
       "name": "Track 5 divider",
       "grid": {
-        "column": 7,
-        "row": 226,
-        "columnSpan": 347,
+        "column": 3,
+        "row": 90,
+        "columnSpan": 139,
         "rowSpan": 1
       },
       "zIndex": 43,
       "attributes": {
-        "backgroundColor": "#2b2e35"
+        "backgroundColor": "#1f2228"
       }
     },
     {
       "type": "text-label",
       "name": "Track 6 number",
       "grid": {
-        "column": 9,
-        "row": 232,
-        "columnSpan": 11,
-        "rowSpan": 9
+        "column": 4,
+        "row": 93,
+        "columnSpan": 4,
+        "rowSpan": 4
       },
       "zIndex": 44,
       "attributes": {
@@ -771,10 +771,10 @@
       "type": "text-label",
       "name": "Track 6 title",
       "grid": {
-        "column": 19,
-        "row": 232,
-        "columnSpan": 119,
-        "rowSpan": 9
+        "column": 8,
+        "row": 93,
+        "columnSpan": 47,
+        "rowSpan": 4
       },
       "zIndex": 45,
       "attributes": {
@@ -787,10 +787,10 @@
       "type": "text-label",
       "name": "Track 6 duration",
       "grid": {
-        "column": 139,
-        "row": 232,
-        "columnSpan": 22,
-        "rowSpan": 9
+        "column": 56,
+        "row": 93,
+        "columnSpan": 9,
+        "rowSpan": 4
       },
       "zIndex": 46,
       "attributes": {
@@ -804,10 +804,10 @@
       "type": "chip-tag",
       "name": "Track 6 live badge",
       "grid": {
-        "column": 165,
-        "row": 230,
-        "columnSpan": 31,
-        "rowSpan": 12
+        "column": 66,
+        "row": 92,
+        "columnSpan": 12,
+        "rowSpan": 5
       },
       "zIndex": 47,
       "attributes": {
@@ -824,10 +824,10 @@
       "type": "text-label",
       "name": "Track 6 note",
       "grid": {
-        "column": 196,
-        "row": 232,
-        "columnSpan": 153,
-        "rowSpan": 8
+        "column": 78,
+        "row": 93,
+        "columnSpan": 61,
+        "rowSpan": 3
       },
       "zIndex": 48,
       "attributes": {
@@ -841,24 +841,24 @@
       "type": "divider",
       "name": "Track 6 divider",
       "grid": {
-        "column": 7,
-        "row": 246,
-        "columnSpan": 347,
+        "column": 3,
+        "row": 98,
+        "columnSpan": 139,
         "rowSpan": 1
       },
       "zIndex": 49,
       "attributes": {
-        "backgroundColor": "#2b2e35"
+        "backgroundColor": "#1f2228"
       }
     },
     {
       "type": "text-label",
       "name": "Track 7 number",
       "grid": {
-        "column": 9,
-        "row": 254,
-        "columnSpan": 11,
-        "rowSpan": 9
+        "column": 4,
+        "row": 102,
+        "columnSpan": 4,
+        "rowSpan": 4
       },
       "zIndex": 50,
       "attributes": {
@@ -872,10 +872,10 @@
       "type": "text-label",
       "name": "Track 7 title",
       "grid": {
-        "column": 19,
-        "row": 254,
-        "columnSpan": 119,
-        "rowSpan": 9
+        "column": 8,
+        "row": 102,
+        "columnSpan": 47,
+        "rowSpan": 4
       },
       "zIndex": 51,
       "attributes": {
@@ -888,10 +888,10 @@
       "type": "text-label",
       "name": "Track 7 duration",
       "grid": {
-        "column": 138,
-        "row": 250,
-        "columnSpan": 24,
-        "rowSpan": 8
+        "column": 55,
+        "row": 100,
+        "columnSpan": 10,
+        "rowSpan": 3
       },
       "zIndex": 52,
       "attributes": {
@@ -906,10 +906,10 @@
       "type": "chip-tag",
       "name": "Track 7 duration difference",
       "grid": {
-        "column": 140,
-        "row": 259,
-        "columnSpan": 20,
-        "rowSpan": 7
+        "column": 56,
+        "row": 104,
+        "columnSpan": 8,
+        "rowSpan": 3
       },
       "zIndex": 53,
       "attributes": {
@@ -927,10 +927,10 @@
       "type": "chip-tag",
       "name": "Track 7 versions badge",
       "grid": {
-        "column": 165,
-        "row": 252,
-        "columnSpan": 31,
-        "rowSpan": 12
+        "column": 66,
+        "row": 101,
+        "columnSpan": 12,
+        "rowSpan": 5
       },
       "zIndex": 54,
       "attributes": {
@@ -947,10 +947,10 @@
       "type": "text-label",
       "name": "Track 7 note",
       "grid": {
-        "column": 196,
-        "row": 251,
-        "columnSpan": 153,
-        "rowSpan": 14
+        "column": 78,
+        "row": 100,
+        "columnSpan": 61,
+        "rowSpan": 6
       },
       "zIndex": 55,
       "attributes": {
@@ -964,24 +964,24 @@
       "type": "divider",
       "name": "Track 7 divider",
       "grid": {
-        "column": 7,
-        "row": 270,
-        "columnSpan": 347,
+        "column": 3,
+        "row": 108,
+        "columnSpan": 139,
         "rowSpan": 1
       },
       "zIndex": 56,
       "attributes": {
-        "backgroundColor": "#2b2e35"
+        "backgroundColor": "#1f2228"
       }
     },
     {
       "type": "text-label",
       "name": "Track 8 number",
       "grid": {
-        "column": 9,
-        "row": 276,
-        "columnSpan": 11,
-        "rowSpan": 9
+        "column": 4,
+        "row": 110,
+        "columnSpan": 4,
+        "rowSpan": 4
       },
       "zIndex": 57,
       "attributes": {
@@ -995,10 +995,10 @@
       "type": "text-label",
       "name": "Track 8 title",
       "grid": {
-        "column": 19,
-        "row": 276,
-        "columnSpan": 119,
-        "rowSpan": 9
+        "column": 8,
+        "row": 110,
+        "columnSpan": 47,
+        "rowSpan": 4
       },
       "zIndex": 58,
       "attributes": {
@@ -1011,10 +1011,10 @@
       "type": "text-label",
       "name": "Track 8 duration",
       "grid": {
-        "column": 139,
-        "row": 276,
-        "columnSpan": 22,
-        "rowSpan": 9
+        "column": 56,
+        "row": 110,
+        "columnSpan": 9,
+        "rowSpan": 4
       },
       "zIndex": 59,
       "attributes": {
@@ -1028,10 +1028,10 @@
       "type": "text-label",
       "name": "Track 8 note",
       "grid": {
-        "column": 196,
-        "row": 276,
-        "columnSpan": 153,
-        "rowSpan": 8
+        "column": 78,
+        "row": 110,
+        "columnSpan": 61,
+        "rowSpan": 3
       },
       "zIndex": 60,
       "attributes": {
@@ -1045,24 +1045,24 @@
       "type": "divider",
       "name": "Track 8 divider",
       "grid": {
-        "column": 7,
-        "row": 290,
-        "columnSpan": 347,
+        "column": 3,
+        "row": 116,
+        "columnSpan": 139,
         "rowSpan": 1
       },
       "zIndex": 61,
       "attributes": {
-        "backgroundColor": "#2b2e35"
+        "backgroundColor": "#1f2228"
       }
     },
     {
       "type": "text-label",
       "name": "Track 9 number",
       "grid": {
-        "column": 9,
-        "row": 296,
-        "columnSpan": 11,
-        "rowSpan": 9
+        "column": 4,
+        "row": 118,
+        "columnSpan": 4,
+        "rowSpan": 4
       },
       "zIndex": 62,
       "attributes": {
@@ -1076,10 +1076,10 @@
       "type": "text-label",
       "name": "Track 9 title",
       "grid": {
-        "column": 19,
-        "row": 296,
-        "columnSpan": 119,
-        "rowSpan": 9
+        "column": 8,
+        "row": 118,
+        "columnSpan": 47,
+        "rowSpan": 4
       },
       "zIndex": 63,
       "attributes": {
@@ -1092,10 +1092,10 @@
       "type": "text-label",
       "name": "Track 9 duration",
       "grid": {
-        "column": 139,
-        "row": 296,
-        "columnSpan": 22,
-        "rowSpan": 9
+        "column": 56,
+        "row": 118,
+        "columnSpan": 9,
+        "rowSpan": 4
       },
       "zIndex": 64,
       "attributes": {
@@ -1109,10 +1109,10 @@
       "type": "chip-tag",
       "name": "Track 9 remixes badge",
       "grid": {
-        "column": 165,
-        "row": 295,
-        "columnSpan": 31,
-        "rowSpan": 12
+        "column": 66,
+        "row": 118,
+        "columnSpan": 12,
+        "rowSpan": 5
       },
       "zIndex": 65,
       "attributes": {
@@ -1129,10 +1129,10 @@
       "type": "text-label",
       "name": "Track 9 note",
       "grid": {
-        "column": 196,
-        "row": 297,
-        "columnSpan": 153,
-        "rowSpan": 8
+        "column": 78,
+        "row": 119,
+        "columnSpan": 61,
+        "rowSpan": 3
       },
       "zIndex": 66,
       "attributes": {
@@ -1146,24 +1146,24 @@
       "type": "divider",
       "name": "Track 9 divider",
       "grid": {
-        "column": 7,
-        "row": 310,
-        "columnSpan": 347,
+        "column": 3,
+        "row": 124,
+        "columnSpan": 139,
         "rowSpan": 1
       },
       "zIndex": 67,
       "attributes": {
-        "backgroundColor": "#2b2e35"
+        "backgroundColor": "#1f2228"
       }
     },
     {
       "type": "text-label",
       "name": "Track 10 number",
       "grid": {
-        "column": 9,
-        "row": 317,
-        "columnSpan": 11,
-        "rowSpan": 9
+        "column": 4,
+        "row": 127,
+        "columnSpan": 4,
+        "rowSpan": 4
       },
       "zIndex": 68,
       "attributes": {
@@ -1177,10 +1177,10 @@
       "type": "text-label",
       "name": "Track 10 title",
       "grid": {
-        "column": 19,
-        "row": 317,
-        "columnSpan": 111,
-        "rowSpan": 9
+        "column": 8,
+        "row": 127,
+        "columnSpan": 44,
+        "rowSpan": 4
       },
       "zIndex": 69,
       "attributes": {
@@ -1193,10 +1193,10 @@
       "type": "chip-tag",
       "name": "Track 10 remix marker",
       "grid": {
-        "column": 130,
-        "row": 316,
-        "columnSpan": 11,
-        "rowSpan": 11
+        "column": 52,
+        "row": 126,
+        "columnSpan": 4,
+        "rowSpan": 4
       },
       "zIndex": 70,
       "attributes": {
@@ -1213,10 +1213,10 @@
       "type": "text-label",
       "name": "Track 10 duration",
       "grid": {
-        "column": 146,
-        "row": 317,
-        "columnSpan": 22,
-        "rowSpan": 9
+        "column": 58,
+        "row": 127,
+        "columnSpan": 9,
+        "rowSpan": 4
       },
       "zIndex": 71,
       "attributes": {
@@ -1230,10 +1230,10 @@
       "type": "text-label",
       "name": "Track 10 note",
       "grid": {
-        "column": 203,
-        "row": 317,
-        "columnSpan": 153,
-        "rowSpan": 8
+        "column": 81,
+        "row": 127,
+        "columnSpan": 61,
+        "rowSpan": 3
       },
       "zIndex": 72,
       "attributes": {
@@ -1247,14 +1247,14 @@
       "type": "divider",
       "name": "Track 10 divider",
       "grid": {
-        "column": 7,
-        "row": 331,
-        "columnSpan": 347,
+        "column": 3,
+        "row": 132,
+        "columnSpan": 139,
         "rowSpan": 1
       },
       "zIndex": 73,
       "attributes": {
-        "backgroundColor": "#2b2e35"
+        "backgroundColor": "#1f2228"
       }
     }
   ]

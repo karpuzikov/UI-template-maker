@@ -83,6 +83,8 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-radius:3px;padd
     <label><input id="show-grid" type="checkbox" checked> Grid</label>
     <label>Zoom <select id="zoom-mode"><option value="fit">Fit</option><option value="0.25">25%</option><option value="0.5">50%</option><option value="0.75">75%</option><option value="1" selected>100%</option><option value="1.5">150%</option><option value="2">200%</option></select></label>
     <span class="spacer"></span>
+    <button id="undo-change" title="Undo (Ctrl+Z)" disabled>↶ Undo</button>
+    <button id="redo-change" title="Redo (Ctrl+Y)" disabled>↷ Redo</button>
     <button id="new-layout" class="danger">New</button>
     <button id="import-layout">Import</button>
     <input id="import-file" type="file" accept=".json,application/json" hidden>
@@ -297,6 +299,9 @@ const stage = $('stage'), canvasArea = $('canvas-area'), propertiesPanel = $('pr
 let state = loadSavedStateOrNull() || createEmptyState();
 let lastUsedAttributesByElementType = loadLastUsedAttributes();
 let copiedStyleAttributes = null;
+const UI_TEMPLATE_MAKER_UNDO_LIMIT = 100;
+const UI_TEMPLATE_MAKER_UNDO_MERGE_MILLISECONDS = 500; // rapid edits (typing, held arrow) become one undo step
+let undoSnapshots = [], redoSnapshots = [], lastSavedSnapshot = JSON.stringify(state), lastSaveTime = 0;
 let selectedElementId = null, zoomMode = '1', zoom = 1, paletteFilter = 'all', paletteSearchText = '';
 
 function createEmptyState() {
@@ -348,9 +353,40 @@ function resetStyleOfElement(element) {
   saveLastUsedAttributes();
   onElementChanged(element); renderPropertiesPanel();
 }
-function saveState() {
-  try { localStorage.setItem(UI_TEMPLATE_MAKER_STORAGE_KEY, JSON.stringify(state)); }
+function writeSnapshotToStorage(snapshot) {
+  try { localStorage.setItem(UI_TEMPLATE_MAKER_STORAGE_KEY, snapshot); }
   catch (error) { console.warn('UI Template Maker: autosave failed', error); }
+}
+function saveState() {
+  const snapshot = JSON.stringify(state);
+  if (snapshot === lastSavedSnapshot) return;
+  const now = Date.now();
+  if (now - lastSaveTime > UI_TEMPLATE_MAKER_UNDO_MERGE_MILLISECONDS) {
+    undoSnapshots.push(lastSavedSnapshot);
+    if (undoSnapshots.length > UI_TEMPLATE_MAKER_UNDO_LIMIT) undoSnapshots.shift();
+  }
+  lastSaveTime = now;
+  redoSnapshots = [];
+  lastSavedSnapshot = snapshot;
+  writeSnapshotToStorage(snapshot);
+  updateUndoRedoButtons();
+}
+function moveSnapshotBetweenStacks(sourceStack, targetStack) {
+  if (!sourceStack.length) return;
+  targetStack.push(lastSavedSnapshot);
+  lastSavedSnapshot = sourceStack.pop();
+  lastSaveTime = 0;
+  state = JSON.parse(lastSavedSnapshot);
+  if (!findElementById(selectedElementId)) selectedElementId = null;
+  writeSnapshotToStorage(lastSavedSnapshot);
+  renderEverything();
+  updateUndoRedoButtons();
+}
+const undoLastChange = () => moveSnapshotBetweenStacks(undoSnapshots, redoSnapshots);
+const redoLastChange = () => moveSnapshotBetweenStacks(redoSnapshots, undoSnapshots);
+function updateUndoRedoButtons() {
+  $('undo-change').disabled = !undoSnapshots.length;
+  $('redo-change').disabled = !redoSnapshots.length;
 }
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const cellWidthPx = () => state.canvasWidth / state.columns;
@@ -629,7 +665,7 @@ function updatePixelReadout(element) {
 function renderElementOutline() {
   propertiesPanel.append(createNode('h3', '', 'Layout'),
     createNode('p', 'muted', 'Drag elements from the left onto the grid. Drag to move, corner handle to resize.'),
-    createNode('p', 'muted', 'Keys: Del delete · Arrows move · Shift+Arrows resize · Ctrl+D duplicate · Esc deselect'));
+    createNode('p', 'muted', 'Keys: Ctrl+Z undo · Ctrl+Y redo · Del delete · Arrows move · Shift+Arrows resize · Ctrl+D duplicate · Esc deselect'));
   const fieldset = createNode('fieldset');
   fieldset.append(createNode('legend', '', `Elements (${state.elements.length})`));
   [...state.elements].sort((a, b) => b.zIndex - a.zIndex).forEach(element =>
@@ -715,6 +751,8 @@ stage.addEventListener('drop', event => {
 });
 document.addEventListener('keydown', event => {
   if (event.target.closest('input,textarea,select')) return;
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') { event.preventDefault(); return event.shiftKey ? redoLastChange() : undoLastChange(); }
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'y') { event.preventDefault(); return redoLastChange(); }
   if (event.key === 'Escape') return selectElement(null);
   const element = findElementById(selectedElementId);
   if (!element) return;
@@ -844,6 +882,8 @@ $('grid-cell-size').addEventListener('change', event => {
 $('canvas-background').addEventListener('input', event => { state.canvasBackground = event.target.value; saveState(); renderStage(); });
 $('show-grid').addEventListener('change', event => { state.showGrid = event.target.checked; saveState(); renderStage(); });
 $('zoom-mode').addEventListener('change', event => { zoomMode = event.target.value; renderStage(); });
+$('undo-change').addEventListener('click', undoLastChange);
+$('redo-change').addEventListener('click', redoLastChange);
 $('new-layout').addEventListener('click', () => {
   if (state.elements.length && !confirm('Clear the current layout?')) return;
   state = createEmptyState(); selectedElementId = null;
