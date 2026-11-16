@@ -78,7 +78,7 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-radius:3px;padd
     <label title="Sets columns and rows from a cell size">Cell px <input id="grid-cell-size" type="number" min="2" placeholder="—"></label>
     <label>BG <input id="canvas-background" type="color"></label>
     <label><input id="show-grid" type="checkbox" checked> Grid</label>
-    <label>Zoom <select id="zoom-mode"><option value="fit">Fit</option><option>0.25</option><option>0.5</option><option>0.75</option><option>1</option><option>1.5</option><option>2</option></select></label>
+    <label>Zoom <select id="zoom-mode"><option value="fit">Fit</option><option value="0.25">25%</option><option value="0.5">50%</option><option value="0.75">75%</option><option value="1" selected>100%</option><option value="1.5">150%</option><option value="2">200%</option></select></label>
     <span class="spacer"></span>
     <button id="new-layout" class="danger">New</button>
     <button id="import-layout">Import</button>
@@ -289,7 +289,7 @@ const paletteCategoryForGroups = groups => groups === 'wdm' ? 'Common' : platfor
 const $ = id => document.getElementById(id);
 const stage = $('stage'), canvasArea = $('canvas-area'), propertiesPanel = $('props');
 let state = loadSavedStateOrNull() || createEmptyState();
-let selectedElementId = null, zoomMode = 'fit', zoom = 1, paletteFilter = 'all', paletteSearchText = '';
+let selectedElementId = null, zoomMode = '1', zoom = 1, paletteFilter = 'all', paletteSearchText = '';
 
 function createEmptyState() {
   return { projectName: 'My layout', targetPlatform: 'any', canvasWidth: 1920, canvasHeight: 1080, columns: 48, rows: 27, canvasBackground: '#111318', showGrid: true, elements: [], nextElementNumber: 1 };
