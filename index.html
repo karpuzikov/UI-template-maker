@@ -682,7 +682,7 @@ function updatePixelReadout(element) {
 function renderElementOutline() {
   propertiesPanel.append(createNode('h3', '', 'Layout'),
     createNode('p', 'muted', 'Drag elements from the left onto the grid. Drag to move, corner handle to resize.'),
-    createNode('p', 'muted', 'Drag on empty space or on a panel/dialog background (or Shift+drag anywhere) to select several; click a panel first to move it. Double-click an element to edit its text.'),
+    createNode('p', 'muted', 'Drag on empty space or on a panel/dialog background (or Shift+drag anywhere) to select everything it touches; click a panel first to move it. Double-click an element to edit its text.'),
     createNode('p', 'muted', 'Keys: Ctrl+Z undo · Ctrl+Y redo · Del delete · Arrows move · Shift+Arrows resize · Ctrl+D duplicate · Esc deselect'));
   const fieldset = createNode('fieldset');
   fieldset.append(createNode('legend', '', `Elements (${state.elements.length})`));
@@ -805,9 +805,15 @@ function startMarqueeSelection(event, nodeUnderPointer) {
       return setSelection(selectedElementIds.includes(id) ? selectedElementIds.filter(other => other !== id) : [...selectedElementIds, id]);
     }
     const cellWidth = cellWidthPx() * zoom, cellHeight = cellHeightPx() * zoom;
-    const insideIds = state.elements.filter(element =>
-      element.column * cellWidth >= rectangle.left && (element.column + element.columnSpan) * cellWidth <= rectangle.right &&
-      element.row * cellHeight >= rectangle.top && (element.row + element.rowSpan) * cellHeight <= rectangle.bottom).map(element => element.id);
+    // Touching is enough, except background panels (cards, dialogs…) which must be fully inside, so they don't get grabbed by accident.
+    const insideIds = state.elements.filter(element => {
+      const left = element.column * cellWidth, right = (element.column + element.columnSpan) * cellWidth;
+      const top = element.row * cellHeight, bottom = (element.row + element.rowSpan) * cellHeight;
+      const isBackgroundPanel = findElementDefinition(element.type).kind === 'container' && element.type !== 'divider';
+      return isBackgroundPanel
+        ? left >= rectangle.left && right <= rectangle.right && top >= rectangle.top && bottom <= rectangle.bottom
+        : left < rectangle.right && right > rectangle.left && top < rectangle.bottom && bottom > rectangle.top;
+    }).map(element => element.id);
     setSelection(event.shiftKey ? [...new Set([...selectedElementIds, ...insideIds])] : insideIds);
   };
   canvasArea.addEventListener('pointermove', onPointerMove);
