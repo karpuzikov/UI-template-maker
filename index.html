@@ -45,7 +45,8 @@ main{overflow:auto;display:flex;padding:28px}
 .el.selected{outline:2px solid var(--accent);outline-offset:1px}
 .el-body{position:absolute;inset:0;display:flex;gap:.5em;overflow:hidden;padding:0 .6em;white-space:pre;line-height:1.15}
 .el-body.wrap{white-space:pre-wrap}
-.el-content{flex:none;min-width:0;text-box:trim-both cap text}
+/* box = cap top..baseline so letters center optically; bottom keeps descenders inside */
+.el-content{flex:none;min-width:0;text-box-trim:trim-both;text-box-edge:var(--element-text-box-edge,cap alphabetic)}
 .el-body.wrap .el-content{flex:0 1 auto}
 .el-fill{flex:1;align-self:stretch;min-width:0;display:flex}
 .el-suffix{margin-left:auto;opacity:.75;flex:none}
@@ -474,6 +475,7 @@ function buildElementNode(element) {
   });
   // A divider is a line centered in its box, so it can sit in one grid cell at any grid size.
   if (definition.type === 'divider') Object.assign(body.style, { background: 'transparent', border: 'none' });
+  body.style.setProperty('--element-text-box-edge', attributes.verticalAlign === 'bottom' ? 'cap text' : 'cap alphabetic');
   body.append(...renderElementContent(definition, attributes));
 
   const tag = document.createElement('div');
