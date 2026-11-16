@@ -4,11 +4,11 @@
   "targetPlatform": "desktop",
   "canvas": {
     "widthPx": 720,
-    "heightPx": 710,
-    "columns": 144,
-    "rows": 142,
-    "cellWidthPx": 5,
-    "cellHeightPx": 5,
+    "heightPx": 576,
+    "columns": 45,
+    "rows": 36,
+    "cellWidthPx": 16,
+    "cellHeightPx": 16,
     "backgroundColor": "#0f1115"
   },
   "coordinateSystem": "Origin top-left. Grid column/row are zero-based. px = grid × cell size. Higher zIndex is drawn on top.",
@@ -19,8 +19,8 @@
       "grid": {
         "column": 0,
         "row": 0,
-        "columnSpan": 144,
-        "rowSpan": 142
+        "columnSpan": 45,
+        "rowSpan": 36
       },
       "zIndex": 1,
       "attributes": {
@@ -28,7 +28,6 @@
         "backgroundColor": "#16181d",
         "borderColor": "#2b2e35",
         "borderRadius": 4,
-        "shadow": false,
         "notes": "Release details panel: header, release actions, folder path, explanation, track list."
       }
     },
@@ -36,10 +35,10 @@
       "type": "heading",
       "name": "Release title",
       "grid": {
-        "column": 1,
-        "row": 1,
-        "columnSpan": 106,
-        "rowSpan": 6
+        "column": 0,
+        "row": 0,
+        "columnSpan": 34,
+        "rowSpan": 2
       },
       "zIndex": 2,
       "attributes": {
@@ -53,10 +52,10 @@
       "type": "icon-button",
       "name": "Close button",
       "grid": {
-        "column": 136,
-        "row": 2,
-        "columnSpan": 6,
-        "rowSpan": 6
+        "column": 42,
+        "row": 0,
+        "columnSpan": 2,
+        "rowSpan": 2
       },
       "zIndex": 3,
       "attributes": {
@@ -72,10 +71,10 @@
       "type": "text-label",
       "name": "Release status",
       "grid": {
-        "column": 1,
-        "row": 7,
-        "columnSpan": 49,
-        "rowSpan": 3
+        "column": 0,
+        "row": 2,
+        "columnSpan": 15,
+        "rowSpan": 1
       },
       "zIndex": 4,
       "attributes": {
@@ -88,10 +87,10 @@
       "type": "text-label",
       "name": "Release format",
       "grid": {
-        "column": 1,
-        "row": 12,
-        "columnSpan": 13,
-        "rowSpan": 3
+        "column": 0,
+        "row": 3,
+        "columnSpan": 4,
+        "rowSpan": 1
       },
       "zIndex": 5,
       "attributes": {
@@ -105,10 +104,10 @@
       "type": "chip-tag",
       "name": "Log score badge",
       "grid": {
-        "column": 14,
-        "row": 11,
-        "columnSpan": 12,
-        "rowSpan": 3
+        "column": 4,
+        "row": 3,
+        "columnSpan": 4,
+        "rowSpan": 1
       },
       "zIndex": 6,
       "attributes": {
@@ -125,10 +124,10 @@
       "type": "chip-tag",
       "name": "CUE badge",
       "grid": {
-        "column": 28,
-        "row": 11,
-        "columnSpan": 6,
-        "rowSpan": 3
+        "column": 8,
+        "row": 3,
+        "columnSpan": 2,
+        "rowSpan": 1
       },
       "zIndex": 7,
       "attributes": {
@@ -145,10 +144,10 @@
       "type": "text-label",
       "name": "Log file line",
       "grid": {
-        "column": 2,
-        "row": 15,
-        "columnSpan": 61,
-        "rowSpan": 2
+        "column": 0,
+        "row": 4,
+        "columnSpan": 20,
+        "rowSpan": 1
       },
       "zIndex": 8,
       "attributes": {
@@ -161,10 +160,10 @@
       "type": "button",
       "name": "Keep release button",
       "grid": {
-        "column": 3,
-        "row": 19,
-        "columnSpan": 18,
-        "rowSpan": 6
+        "column": 1,
+        "row": 6,
+        "columnSpan": 6,
+        "rowSpan": 2
       },
       "zIndex": 9,
       "attributes": {
@@ -181,10 +180,10 @@
       "type": "button",
       "name": "Ignore release button",
       "grid": {
-        "column": 23,
-        "row": 19,
-        "columnSpan": 22,
-        "rowSpan": 6
+        "column": 8,
+        "row": 6,
+        "columnSpan": 7,
+        "rowSpan": 2
       },
       "zIndex": 10,
       "attributes": {
@@ -201,10 +200,10 @@
       "type": "button",
       "name": "Album group button",
       "grid": {
-        "column": 114,
-        "row": 19,
-        "columnSpan": 22,
-        "rowSpan": 7
+        "column": 36,
+        "row": 6,
+        "columnSpan": 7,
+        "rowSpan": 2
       },
       "zIndex": 11,
       "attributes": {
@@ -221,10 +220,10 @@
       "type": "icon-button",
       "name": "Open folder button",
       "grid": {
-        "column": 3,
-        "row": 28,
-        "columnSpan": 6,
-        "rowSpan": 6
+        "column": 1,
+        "row": 9,
+        "columnSpan": 2,
+        "rowSpan": 2
       },
       "zIndex": 12,
       "attributes": {
@@ -239,10 +238,10 @@
       "type": "text-input",
       "name": "Folder path",
       "grid": {
-        "column": 10,
-        "row": 28,
-        "columnSpan": 126,
-        "rowSpan": 6
+        "column": 3,
+        "row": 9,
+        "columnSpan": 40,
+        "rowSpan": 2
       },
       "zIndex": 13,
       "attributes": {
@@ -261,17 +260,18 @@
       "type": "paragraph",
       "name": "Selection explanation",
       "grid": {
-        "column": 1,
-        "row": 36,
-        "columnSpan": 133,
-        "rowSpan": 7
+        "column": 0,
+        "row": 11,
+        "columnSpan": 42,
+        "rowSpan": 2
       },
       "zIndex": 14,
       "attributes": {
         "text": "Add: this is the selected edition representing the album after collection-wide optimization; its included recordings are covered elsewhere in the retained set.",
         "fontSize": 12,
         "textColor": "#d1d5db",
-        "wrapText": true
+        "wrapText": true,
+        "verticalAlign": "center"
       }
     },
     {
@@ -279,23 +279,23 @@
       "name": "Header divider",
       "grid": {
         "column": 0,
-        "row": 44,
-        "columnSpan": 144,
+        "row": 13,
+        "columnSpan": 45,
         "rowSpan": 1
       },
       "zIndex": 15,
       "attributes": {
-        "backgroundColor": "#1f2228"
+        "backgroundColor": "#2b2e35"
       }
     },
     {
       "type": "heading",
       "name": "Tracks heading",
       "grid": {
-        "column": 1,
-        "row": 45,
-        "columnSpan": 18,
-        "rowSpan": 4
+        "column": 0,
+        "row": 14,
+        "columnSpan": 6,
+        "rowSpan": 1
       },
       "zIndex": 16,
       "attributes": {
@@ -309,10 +309,10 @@
       "type": "text-label",
       "name": "Track 1 number",
       "grid": {
-        "column": 4,
-        "row": 52,
-        "columnSpan": 4,
-        "rowSpan": 4
+        "column": 1,
+        "row": 15,
+        "columnSpan": 2,
+        "rowSpan": 1
       },
       "zIndex": 17,
       "attributes": {
@@ -326,10 +326,10 @@
       "type": "text-label",
       "name": "Track 1 title",
       "grid": {
-        "column": 8,
-        "row": 52,
-        "columnSpan": 47,
-        "rowSpan": 4
+        "column": 3,
+        "row": 15,
+        "columnSpan": 14,
+        "rowSpan": 1
       },
       "zIndex": 18,
       "attributes": {
@@ -342,27 +342,28 @@
       "type": "text-label",
       "name": "Track 1 duration",
       "grid": {
-        "column": 56,
-        "row": 52,
-        "columnSpan": 9,
-        "rowSpan": 4
+        "column": 17,
+        "row": 15,
+        "columnSpan": 3,
+        "rowSpan": 1
       },
       "zIndex": 19,
       "attributes": {
         "text": "1:38",
         "fontSize": 12,
+        "textAlign": "center",
         "textColor": "#8fb0d0",
-        "textAlign": "center"
+        "fontWeight": "400"
       }
     },
     {
       "type": "text-label",
       "name": "Track 1 note",
       "grid": {
-        "column": 78,
-        "row": 52,
-        "columnSpan": 61,
-        "rowSpan": 3
+        "column": 24,
+        "row": 15,
+        "columnSpan": 19,
+        "rowSpan": 1
       },
       "zIndex": 20,
       "attributes": {
@@ -376,24 +377,24 @@
       "type": "divider",
       "name": "Track 1 divider",
       "grid": {
-        "column": 3,
-        "row": 57,
-        "columnSpan": 139,
+        "column": 1,
+        "row": 16,
+        "columnSpan": 43,
         "rowSpan": 1
       },
       "zIndex": 21,
       "attributes": {
-        "backgroundColor": "#1f2228"
+        "backgroundColor": "#2b2e35"
       }
     },
     {
       "type": "text-label",
       "name": "Track 2 number",
       "grid": {
-        "column": 4,
-        "row": 60,
-        "columnSpan": 4,
-        "rowSpan": 4
+        "column": 1,
+        "row": 17,
+        "columnSpan": 2,
+        "rowSpan": 1
       },
       "zIndex": 22,
       "attributes": {
@@ -407,10 +408,10 @@
       "type": "text-label",
       "name": "Track 2 title",
       "grid": {
-        "column": 8,
-        "row": 60,
-        "columnSpan": 47,
-        "rowSpan": 4
+        "column": 3,
+        "row": 17,
+        "columnSpan": 14,
+        "rowSpan": 1
       },
       "zIndex": 23,
       "attributes": {
@@ -423,27 +424,28 @@
       "type": "text-label",
       "name": "Track 2 duration",
       "grid": {
-        "column": 56,
-        "row": 60,
-        "columnSpan": 9,
-        "rowSpan": 4
+        "column": 17,
+        "row": 17,
+        "columnSpan": 3,
+        "rowSpan": 1
       },
       "zIndex": 24,
       "attributes": {
         "text": "9:16",
         "fontSize": 12,
+        "textAlign": "center",
         "textColor": "#8fb0d0",
-        "textAlign": "center"
+        "fontWeight": "400"
       }
     },
     {
       "type": "text-label",
       "name": "Track 2 note",
       "grid": {
-        "column": 78,
-        "row": 60,
-        "columnSpan": 61,
-        "rowSpan": 3
+        "column": 24,
+        "row": 17,
+        "columnSpan": 19,
+        "rowSpan": 1
       },
       "zIndex": 25,
       "attributes": {
@@ -457,24 +459,24 @@
       "type": "divider",
       "name": "Track 2 divider",
       "grid": {
-        "column": 3,
-        "row": 66,
-        "columnSpan": 139,
+        "column": 1,
+        "row": 18,
+        "columnSpan": 43,
         "rowSpan": 1
       },
       "zIndex": 26,
       "attributes": {
-        "backgroundColor": "#1f2228"
+        "backgroundColor": "#2b2e35"
       }
     },
     {
       "type": "text-label",
       "name": "Track 3 number",
       "grid": {
-        "column": 4,
-        "row": 68,
-        "columnSpan": 4,
-        "rowSpan": 4
+        "column": 1,
+        "row": 19,
+        "columnSpan": 2,
+        "rowSpan": 1
       },
       "zIndex": 27,
       "attributes": {
@@ -488,10 +490,10 @@
       "type": "text-label",
       "name": "Track 3 title",
       "grid": {
-        "column": 8,
-        "row": 68,
-        "columnSpan": 47,
-        "rowSpan": 4
+        "column": 3,
+        "row": 19,
+        "columnSpan": 14,
+        "rowSpan": 1
       },
       "zIndex": 28,
       "attributes": {
@@ -504,27 +506,28 @@
       "type": "text-label",
       "name": "Track 3 duration",
       "grid": {
-        "column": 56,
-        "row": 68,
-        "columnSpan": 9,
-        "rowSpan": 4
+        "column": 17,
+        "row": 19,
+        "columnSpan": 3,
+        "rowSpan": 1
       },
       "zIndex": 29,
       "attributes": {
         "text": "5:33",
         "fontSize": 12,
+        "textAlign": "center",
         "textColor": "#8fb0d0",
-        "textAlign": "center"
+        "fontWeight": "400"
       }
     },
     {
       "type": "chip-tag",
       "name": "Track 3 remixes badge",
       "grid": {
-        "column": 66,
-        "row": 68,
-        "columnSpan": 12,
-        "rowSpan": 5
+        "column": 20,
+        "row": 19,
+        "columnSpan": 4,
+        "rowSpan": 1
       },
       "zIndex": 30,
       "attributes": {
@@ -541,10 +544,10 @@
       "type": "text-label",
       "name": "Track 3 note",
       "grid": {
-        "column": 78,
-        "row": 68,
-        "columnSpan": 61,
-        "rowSpan": 3
+        "column": 24,
+        "row": 19,
+        "columnSpan": 19,
+        "rowSpan": 1
       },
       "zIndex": 31,
       "attributes": {
@@ -558,24 +561,24 @@
       "type": "divider",
       "name": "Track 3 divider",
       "grid": {
-        "column": 3,
-        "row": 74,
-        "columnSpan": 139,
+        "column": 1,
+        "row": 20,
+        "columnSpan": 43,
         "rowSpan": 1
       },
       "zIndex": 32,
       "attributes": {
-        "backgroundColor": "#1f2228"
+        "backgroundColor": "#2b2e35"
       }
     },
     {
       "type": "text-label",
       "name": "Track 4 number",
       "grid": {
-        "column": 4,
-        "row": 76,
-        "columnSpan": 4,
-        "rowSpan": 4
+        "column": 1,
+        "row": 21,
+        "columnSpan": 2,
+        "rowSpan": 1
       },
       "zIndex": 33,
       "attributes": {
@@ -589,10 +592,10 @@
       "type": "text-label",
       "name": "Track 4 title",
       "grid": {
-        "column": 8,
-        "row": 76,
-        "columnSpan": 47,
-        "rowSpan": 4
+        "column": 3,
+        "row": 21,
+        "columnSpan": 14,
+        "rowSpan": 1
       },
       "zIndex": 34,
       "attributes": {
@@ -605,27 +608,28 @@
       "type": "text-label",
       "name": "Track 4 duration",
       "grid": {
-        "column": 56,
-        "row": 76,
-        "columnSpan": 9,
-        "rowSpan": 4
+        "column": 17,
+        "row": 21,
+        "columnSpan": 3,
+        "rowSpan": 1
       },
       "zIndex": 35,
       "attributes": {
         "text": "4:48",
         "fontSize": 12,
+        "textAlign": "center",
         "textColor": "#8fb0d0",
-        "textAlign": "center"
+        "fontWeight": "400"
       }
     },
     {
       "type": "chip-tag",
       "name": "Track 4 remixes badge",
       "grid": {
-        "column": 66,
-        "row": 76,
-        "columnSpan": 12,
-        "rowSpan": 5
+        "column": 20,
+        "row": 21,
+        "columnSpan": 4,
+        "rowSpan": 1
       },
       "zIndex": 36,
       "attributes": {
@@ -642,10 +646,10 @@
       "type": "text-label",
       "name": "Track 4 note",
       "grid": {
-        "column": 78,
-        "row": 76,
-        "columnSpan": 61,
-        "rowSpan": 3
+        "column": 24,
+        "row": 21,
+        "columnSpan": 19,
+        "rowSpan": 1
       },
       "zIndex": 37,
       "attributes": {
@@ -659,24 +663,24 @@
       "type": "divider",
       "name": "Track 4 divider",
       "grid": {
-        "column": 3,
-        "row": 82,
-        "columnSpan": 139,
+        "column": 1,
+        "row": 22,
+        "columnSpan": 43,
         "rowSpan": 1
       },
       "zIndex": 38,
       "attributes": {
-        "backgroundColor": "#1f2228"
+        "backgroundColor": "#2b2e35"
       }
     },
     {
       "type": "text-label",
       "name": "Track 5 number",
       "grid": {
-        "column": 4,
-        "row": 84,
-        "columnSpan": 4,
-        "rowSpan": 4
+        "column": 1,
+        "row": 23,
+        "columnSpan": 2,
+        "rowSpan": 1
       },
       "zIndex": 39,
       "attributes": {
@@ -690,10 +694,10 @@
       "type": "text-label",
       "name": "Track 5 title",
       "grid": {
-        "column": 8,
-        "row": 84,
-        "columnSpan": 47,
-        "rowSpan": 4
+        "column": 3,
+        "row": 23,
+        "columnSpan": 14,
+        "rowSpan": 1
       },
       "zIndex": 40,
       "attributes": {
@@ -706,27 +710,28 @@
       "type": "text-label",
       "name": "Track 5 duration",
       "grid": {
-        "column": 56,
-        "row": 84,
-        "columnSpan": 9,
-        "rowSpan": 4
+        "column": 17,
+        "row": 23,
+        "columnSpan": 3,
+        "rowSpan": 1
       },
       "zIndex": 41,
       "attributes": {
         "text": "10:21",
         "fontSize": 12,
+        "textAlign": "center",
         "textColor": "#8fb0d0",
-        "textAlign": "center"
+        "fontWeight": "400"
       }
     },
     {
       "type": "text-label",
       "name": "Track 5 note",
       "grid": {
-        "column": 78,
-        "row": 85,
-        "columnSpan": 61,
-        "rowSpan": 3
+        "column": 24,
+        "row": 23,
+        "columnSpan": 19,
+        "rowSpan": 1
       },
       "zIndex": 42,
       "attributes": {
@@ -740,24 +745,24 @@
       "type": "divider",
       "name": "Track 5 divider",
       "grid": {
-        "column": 3,
-        "row": 90,
-        "columnSpan": 139,
+        "column": 1,
+        "row": 24,
+        "columnSpan": 43,
         "rowSpan": 1
       },
       "zIndex": 43,
       "attributes": {
-        "backgroundColor": "#1f2228"
+        "backgroundColor": "#2b2e35"
       }
     },
     {
       "type": "text-label",
       "name": "Track 6 number",
       "grid": {
-        "column": 4,
-        "row": 93,
-        "columnSpan": 4,
-        "rowSpan": 4
+        "column": 1,
+        "row": 25,
+        "columnSpan": 2,
+        "rowSpan": 1
       },
       "zIndex": 44,
       "attributes": {
@@ -771,10 +776,10 @@
       "type": "text-label",
       "name": "Track 6 title",
       "grid": {
-        "column": 8,
-        "row": 93,
-        "columnSpan": 47,
-        "rowSpan": 4
+        "column": 3,
+        "row": 25,
+        "columnSpan": 14,
+        "rowSpan": 1
       },
       "zIndex": 45,
       "attributes": {
@@ -787,27 +792,28 @@
       "type": "text-label",
       "name": "Track 6 duration",
       "grid": {
-        "column": 56,
-        "row": 93,
-        "columnSpan": 9,
-        "rowSpan": 4
+        "column": 17,
+        "row": 25,
+        "columnSpan": 3,
+        "rowSpan": 1
       },
       "zIndex": 46,
       "attributes": {
         "text": "6:45",
         "fontSize": 12,
+        "textAlign": "center",
         "textColor": "#8fb0d0",
-        "textAlign": "center"
+        "fontWeight": "400"
       }
     },
     {
       "type": "chip-tag",
       "name": "Track 6 live badge",
       "grid": {
-        "column": 66,
-        "row": 92,
-        "columnSpan": 12,
-        "rowSpan": 5
+        "column": 20,
+        "row": 25,
+        "columnSpan": 4,
+        "rowSpan": 1
       },
       "zIndex": 47,
       "attributes": {
@@ -824,10 +830,10 @@
       "type": "text-label",
       "name": "Track 6 note",
       "grid": {
-        "column": 78,
-        "row": 93,
-        "columnSpan": 61,
-        "rowSpan": 3
+        "column": 24,
+        "row": 25,
+        "columnSpan": 19,
+        "rowSpan": 1
       },
       "zIndex": 48,
       "attributes": {
@@ -841,24 +847,24 @@
       "type": "divider",
       "name": "Track 6 divider",
       "grid": {
-        "column": 3,
-        "row": 98,
-        "columnSpan": 139,
+        "column": 1,
+        "row": 26,
+        "columnSpan": 43,
         "rowSpan": 1
       },
       "zIndex": 49,
       "attributes": {
-        "backgroundColor": "#1f2228"
+        "backgroundColor": "#2b2e35"
       }
     },
     {
       "type": "text-label",
       "name": "Track 7 number",
       "grid": {
-        "column": 4,
-        "row": 102,
-        "columnSpan": 4,
-        "rowSpan": 4
+        "column": 1,
+        "row": 27,
+        "columnSpan": 2,
+        "rowSpan": 1
       },
       "zIndex": 50,
       "attributes": {
@@ -872,10 +878,10 @@
       "type": "text-label",
       "name": "Track 7 title",
       "grid": {
-        "column": 8,
-        "row": 102,
-        "columnSpan": 47,
-        "rowSpan": 4
+        "column": 3,
+        "row": 27,
+        "columnSpan": 14,
+        "rowSpan": 1
       },
       "zIndex": 51,
       "attributes": {
@@ -888,28 +894,28 @@
       "type": "text-label",
       "name": "Track 7 duration",
       "grid": {
-        "column": 55,
-        "row": 100,
-        "columnSpan": 10,
-        "rowSpan": 3
+        "column": 17,
+        "row": 27,
+        "columnSpan": 3,
+        "rowSpan": 1
       },
       "zIndex": 52,
       "attributes": {
         "text": "12:08",
         "fontSize": 12,
-        "fontWeight": "700",
+        "textAlign": "center",
         "textColor": "#fbbf24",
-        "textAlign": "center"
+        "fontWeight": "700"
       }
     },
     {
       "type": "chip-tag",
       "name": "Track 7 duration difference",
       "grid": {
-        "column": 56,
-        "row": 104,
-        "columnSpan": 8,
-        "rowSpan": 3
+        "column": 17,
+        "row": 28,
+        "columnSpan": 3,
+        "rowSpan": 1
       },
       "zIndex": 53,
       "attributes": {
@@ -927,10 +933,10 @@
       "type": "chip-tag",
       "name": "Track 7 versions badge",
       "grid": {
-        "column": 66,
-        "row": 101,
-        "columnSpan": 12,
-        "rowSpan": 5
+        "column": 20,
+        "row": 27,
+        "columnSpan": 4,
+        "rowSpan": 1
       },
       "zIndex": 54,
       "attributes": {
@@ -947,10 +953,10 @@
       "type": "text-label",
       "name": "Track 7 note",
       "grid": {
-        "column": 78,
-        "row": 100,
-        "columnSpan": 61,
-        "rowSpan": 6
+        "column": 24,
+        "row": 27,
+        "columnSpan": 19,
+        "rowSpan": 2
       },
       "zIndex": 55,
       "attributes": {
@@ -964,24 +970,24 @@
       "type": "divider",
       "name": "Track 7 divider",
       "grid": {
-        "column": 3,
-        "row": 108,
-        "columnSpan": 139,
+        "column": 1,
+        "row": 29,
+        "columnSpan": 43,
         "rowSpan": 1
       },
       "zIndex": 56,
       "attributes": {
-        "backgroundColor": "#1f2228"
+        "backgroundColor": "#2b2e35"
       }
     },
     {
       "type": "text-label",
       "name": "Track 8 number",
       "grid": {
-        "column": 4,
-        "row": 110,
-        "columnSpan": 4,
-        "rowSpan": 4
+        "column": 1,
+        "row": 30,
+        "columnSpan": 2,
+        "rowSpan": 1
       },
       "zIndex": 57,
       "attributes": {
@@ -995,10 +1001,10 @@
       "type": "text-label",
       "name": "Track 8 title",
       "grid": {
-        "column": 8,
-        "row": 110,
-        "columnSpan": 47,
-        "rowSpan": 4
+        "column": 3,
+        "row": 30,
+        "columnSpan": 14,
+        "rowSpan": 1
       },
       "zIndex": 58,
       "attributes": {
@@ -1011,27 +1017,28 @@
       "type": "text-label",
       "name": "Track 8 duration",
       "grid": {
-        "column": 56,
-        "row": 110,
-        "columnSpan": 9,
-        "rowSpan": 4
+        "column": 17,
+        "row": 30,
+        "columnSpan": 3,
+        "rowSpan": 1
       },
       "zIndex": 59,
       "attributes": {
         "text": "6:41",
         "fontSize": 12,
+        "textAlign": "center",
         "textColor": "#8fb0d0",
-        "textAlign": "center"
+        "fontWeight": "400"
       }
     },
     {
       "type": "text-label",
       "name": "Track 8 note",
       "grid": {
-        "column": 78,
-        "row": 110,
-        "columnSpan": 61,
-        "rowSpan": 3
+        "column": 24,
+        "row": 30,
+        "columnSpan": 19,
+        "rowSpan": 1
       },
       "zIndex": 60,
       "attributes": {
@@ -1045,24 +1052,24 @@
       "type": "divider",
       "name": "Track 8 divider",
       "grid": {
-        "column": 3,
-        "row": 116,
-        "columnSpan": 139,
+        "column": 1,
+        "row": 31,
+        "columnSpan": 43,
         "rowSpan": 1
       },
       "zIndex": 61,
       "attributes": {
-        "backgroundColor": "#1f2228"
+        "backgroundColor": "#2b2e35"
       }
     },
     {
       "type": "text-label",
       "name": "Track 9 number",
       "grid": {
-        "column": 4,
-        "row": 118,
-        "columnSpan": 4,
-        "rowSpan": 4
+        "column": 1,
+        "row": 32,
+        "columnSpan": 2,
+        "rowSpan": 1
       },
       "zIndex": 62,
       "attributes": {
@@ -1076,10 +1083,10 @@
       "type": "text-label",
       "name": "Track 9 title",
       "grid": {
-        "column": 8,
-        "row": 118,
-        "columnSpan": 47,
-        "rowSpan": 4
+        "column": 3,
+        "row": 32,
+        "columnSpan": 14,
+        "rowSpan": 1
       },
       "zIndex": 63,
       "attributes": {
@@ -1092,27 +1099,28 @@
       "type": "text-label",
       "name": "Track 9 duration",
       "grid": {
-        "column": 56,
-        "row": 118,
-        "columnSpan": 9,
-        "rowSpan": 4
+        "column": 17,
+        "row": 32,
+        "columnSpan": 3,
+        "rowSpan": 1
       },
       "zIndex": 64,
       "attributes": {
         "text": "7:02",
         "fontSize": 12,
+        "textAlign": "center",
         "textColor": "#8fb0d0",
-        "textAlign": "center"
+        "fontWeight": "400"
       }
     },
     {
       "type": "chip-tag",
       "name": "Track 9 remixes badge",
       "grid": {
-        "column": 66,
-        "row": 118,
-        "columnSpan": 12,
-        "rowSpan": 5
+        "column": 20,
+        "row": 32,
+        "columnSpan": 4,
+        "rowSpan": 1
       },
       "zIndex": 65,
       "attributes": {
@@ -1129,10 +1137,10 @@
       "type": "text-label",
       "name": "Track 9 note",
       "grid": {
-        "column": 78,
-        "row": 119,
-        "columnSpan": 61,
-        "rowSpan": 3
+        "column": 24,
+        "row": 32,
+        "columnSpan": 19,
+        "rowSpan": 1
       },
       "zIndex": 66,
       "attributes": {
@@ -1146,24 +1154,24 @@
       "type": "divider",
       "name": "Track 9 divider",
       "grid": {
-        "column": 3,
-        "row": 124,
-        "columnSpan": 139,
+        "column": 1,
+        "row": 33,
+        "columnSpan": 43,
         "rowSpan": 1
       },
       "zIndex": 67,
       "attributes": {
-        "backgroundColor": "#1f2228"
+        "backgroundColor": "#2b2e35"
       }
     },
     {
       "type": "text-label",
       "name": "Track 10 number",
       "grid": {
-        "column": 4,
-        "row": 127,
-        "columnSpan": 4,
-        "rowSpan": 4
+        "column": 1,
+        "row": 34,
+        "columnSpan": 2,
+        "rowSpan": 1
       },
       "zIndex": 68,
       "attributes": {
@@ -1177,10 +1185,10 @@
       "type": "text-label",
       "name": "Track 10 title",
       "grid": {
-        "column": 8,
-        "row": 127,
-        "columnSpan": 44,
-        "rowSpan": 4
+        "column": 3,
+        "row": 34,
+        "columnSpan": 14,
+        "rowSpan": 1
       },
       "zIndex": 69,
       "attributes": {
@@ -1193,10 +1201,10 @@
       "type": "chip-tag",
       "name": "Track 10 remix marker",
       "grid": {
-        "column": 52,
-        "row": 126,
-        "columnSpan": 4,
-        "rowSpan": 4
+        "column": 17,
+        "row": 34,
+        "columnSpan": 1,
+        "rowSpan": 1
       },
       "zIndex": 70,
       "attributes": {
@@ -1213,27 +1221,28 @@
       "type": "text-label",
       "name": "Track 10 duration",
       "grid": {
-        "column": 58,
-        "row": 127,
-        "columnSpan": 9,
-        "rowSpan": 4
+        "column": 18,
+        "row": 34,
+        "columnSpan": 3,
+        "rowSpan": 1
       },
       "zIndex": 71,
       "attributes": {
         "text": "4:39",
         "fontSize": 12,
+        "textAlign": "center",
         "textColor": "#8a93a3",
-        "textAlign": "center"
+        "fontWeight": "400"
       }
     },
     {
       "type": "text-label",
       "name": "Track 10 note",
       "grid": {
-        "column": 81,
-        "row": 127,
-        "columnSpan": 61,
-        "rowSpan": 3
+        "column": 25,
+        "row": 34,
+        "columnSpan": 19,
+        "rowSpan": 1
       },
       "zIndex": 72,
       "attributes": {
@@ -1247,14 +1256,14 @@
       "type": "divider",
       "name": "Track 10 divider",
       "grid": {
-        "column": 3,
-        "row": 132,
-        "columnSpan": 139,
+        "column": 1,
+        "row": 35,
+        "columnSpan": 43,
         "rowSpan": 1
       },
       "zIndex": 73,
       "attributes": {
-        "backgroundColor": "#1f2228"
+        "backgroundColor": "#2b2e35"
       }
     }
   ]

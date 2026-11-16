@@ -205,7 +205,7 @@ addElementType('Rating', 'wdm', 140, 28, 'range', { ...noFrame, value: 80, accen
 addElementType('Spinner / Loader', 'wdm', 40, 40, 'icon', { ...noFrame, glyph: '◌' });
 addElementType('Badge', 'wdm', 40, 24, 'text', { text: '3', transparentBackground: false, backgroundColor: '#ef4444', borderRadius: 999, textAlign: 'center', textColor: '#ffffff', fontSize: 12, fontWeight: '700' });
 addElementType('Chip / Tag', 'wdm', 100, 32, 'text', { text: 'Tag', transparentBackground: false, borderWidth: 1, borderRadius: 999, textAlign: 'center' });
-addElementType('Divider', 'wdm', 400, 2, 'container', { backgroundColor: '#3a4150', borderWidth: 0, borderRadius: 0 });
+addElementType('Divider', 'wdm', 400, 2, 'container', { backgroundColor: '#3a4150', borderWidth: 1, borderRadius: 0, notes: 'Thin horizontal line (Border px thick) centered in this box.' });
 addElementType('Card', 'wdm', 300, 200, 'container', { text: 'Card title', fontWeight: '600', shadow: true, borderRadius: 10 });
 addElementType('Panel / Container', 'wdm', 400, 300, 'container');
 addElementType('List', 'wdm', 280, 200, 'list');
@@ -472,6 +472,8 @@ function buildElementNode(element) {
     justifyContent: { left: 'flex-start', center: 'center', right: 'flex-end', justify: 'flex-start' }[attributes.textAlign],
     alignItems: { top: 'flex-start', center: 'center', bottom: 'flex-end' }[attributes.verticalAlign],
   });
+  // A divider is a line centered in its box, so it can sit in one grid cell at any grid size.
+  if (definition.type === 'divider') Object.assign(body.style, { background: 'transparent', border: 'none' });
   body.append(...renderElementContent(definition, attributes));
 
   const tag = document.createElement('div');
@@ -489,6 +491,9 @@ function createNode(tagName, className, text, style) {
   return node;
 }
 function renderElementContent(definition, attributes) {
+  if (definition.type === 'divider') {
+    return [createNode('div', 'el-fill', '', { alignSelf: 'center', height: Math.max(1, attributes.borderWidth * zoom) + 'px', background: attributes.backgroundColor, margin: '0 -.6em' })];
+  }
   const suffix = attributes.glyph ? [createNode('span', 'el-suffix', attributes.glyph)] : [];
   switch (definition.kind) {
     case 'input': {
