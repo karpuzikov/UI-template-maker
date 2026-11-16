@@ -19,7 +19,8 @@ input[type=color]{padding:0 2px;width:36px;height:26px}
 input[type=checkbox]{width:16px;height:16px;accent-color:var(--accent)}
 textarea{width:100%;resize:vertical}
 button{cursor:pointer}
-button:hover{border-color:var(--accent)}
+button:hover:not(:disabled){border-color:var(--accent)}
+button:disabled{opacity:.45;cursor:default}
 .primary{background:var(--accent);border-color:var(--accent);color:#fff}
 .danger:hover{border-color:#ef4444;color:#fca5a5}
 .spacer{flex:1}
@@ -295,6 +296,7 @@ const $ = id => document.getElementById(id);
 const stage = $('stage'), canvasArea = $('canvas-area'), propertiesPanel = $('props');
 let state = loadSavedStateOrNull() || createEmptyState();
 let lastUsedAttributesByElementType = loadLastUsedAttributes();
+let copiedStyleAttributes = null;
 let selectedElementId = null, zoomMode = '1', zoom = 1, paletteFilter = 'all', paletteSearchText = '';
 
 function createEmptyState() {
@@ -313,8 +315,38 @@ function loadLastUsedAttributes() {
 function rememberAttributeForElementType(type, key, value) {
   if (ATTRIBUTES_NOT_REMEMBERED.includes(key)) return;
   (lastUsedAttributesByElementType[type] ??= {})[key] = value;
+  saveLastUsedAttributes();
+}
+function saveLastUsedAttributes() {
   try { localStorage.setItem(UI_TEMPLATE_MAKER_LAST_USED_ATTRIBUTES_KEY, JSON.stringify(lastUsedAttributesByElementType)); }
   catch (error) { console.warn('UI Template Maker: could not save remembered values', error); }
+}
+const styleAttributesOf = attributes => Object.fromEntries(Object.entries(attributes).filter(([key]) => !ATTRIBUTES_NOT_REMEMBERED.includes(key)));
+function defaultAttributesForElementType(type) {
+  const definition = findElementDefinition(type);
+  return { ...BASE_ATTRIBUTES, ...KIND_DEFAULT_ATTRIBUTES[definition.kind], ...definition.attributes };
+}
+const attributeKeysForKind = kind => sectionKeysForKind(kind).flatMap(sectionKey => FIELD_SECTIONS[sectionKey][1].map(([key]) => key));
+function copyStyleOfElement(element) {
+  copiedStyleAttributes = styleAttributesOf(element.attributes);
+  renderPropertiesPanel();
+}
+// Pastes only the attributes the target element type actually uses; also becomes its remembered style.
+function pasteStyleIntoElement(element) {
+  const usedKeys = attributeKeysForKind(findElementDefinition(element.type).kind);
+  for (const [key, value] of Object.entries(copiedStyleAttributes)) {
+    if (!usedKeys.includes(key)) continue;
+    element.attributes[key] = value;
+    rememberAttributeForElementType(element.type, key, value);
+  }
+  onElementChanged(element); renderPropertiesPanel();
+}
+// Back to catalog defaults, and forgets the remembered style for this element type.
+function resetStyleOfElement(element) {
+  Object.assign(element.attributes, styleAttributesOf(defaultAttributesForElementType(element.type)));
+  delete lastUsedAttributesByElementType[element.type];
+  saveLastUsedAttributes();
+  onElementChanged(element); renderPropertiesPanel();
 }
 function saveState() {
   try { localStorage.setItem(UI_TEMPLATE_MAKER_STORAGE_KEY, JSON.stringify(state)); }
@@ -340,7 +372,7 @@ function addElementFromCatalog(type, column, row) {
     columnSpan: Math.max(1, Math.round(definition.widthPx / cellWidthPx())),
     rowSpan: Math.max(1, Math.round(definition.heightPx / cellHeightPx())),
     zIndex: state.elements.reduce((max, other) => Math.max(max, other.zIndex), 0) + 1,
-    attributes: { ...BASE_ATTRIBUTES, ...KIND_DEFAULT_ATTRIBUTES[definition.kind], ...definition.attributes, ...lastUsedAttributesByElementType[type] },
+    attributes: { ...defaultAttributesForElementType(type), ...lastUsedAttributesByElementType[type] },
   };
   state.nextElementNumber++;
   clampElementToGrid(element);
@@ -567,7 +599,12 @@ function renderPropertiesPanel() {
     createButton('To front', () => { element.zIndex = Math.max(...state.elements.map(other => other.zIndex)) + 1; onElementChanged(element); }),
     createButton('To back', () => { element.zIndex = Math.min(...state.elements.map(other => other.zIndex)) - 1; onElementChanged(element); }),
     createButton('Delete', deleteSelectedElement, 'danger'));
-  propertiesPanel.append(actions);
+  const styleActions = createNode('div', 'actions');
+  const pasteStyleButton = createButton('Paste style', () => pasteStyleIntoElement(element));
+  pasteStyleButton.disabled = !copiedStyleAttributes;
+  styleActions.append(createButton('Copy style', () => copyStyleOfElement(element)), pasteStyleButton,
+    createButton('Reset style', () => resetStyleOfElement(element), 'danger'));
+  propertiesPanel.append(actions, styleActions);
 
   for (const sectionKey of sectionKeysForKind(definition.kind)) {
     const [title, fields] = FIELD_SECTIONS[sectionKey];
@@ -703,7 +740,7 @@ function buildExportData() {
     coordinateSystem: 'Origin top-left. Grid column/row are zero-based. px = grid × cell size. Higher zIndex is drawn on top.',
     elements: [...state.elements].sort((a, b) => a.zIndex - b.zIndex).map(element => {
       const definition = findElementDefinition(element.type);
-      const relevantKeys = sectionKeysForKind(definition.kind).flatMap(sectionKey => FIELD_SECTIONS[sectionKey][1].map(([key]) => key));
+      const relevantKeys = attributeKeysForKind(definition.kind);
       return {
         id: element.id, name: element.name, type: element.type, label: definition.label, kind: definition.kind,
         platforms: definition.groups.split('').map(group => PLATFORM_NAMES[group].toLowerCase()),
@@ -748,7 +785,7 @@ function importLayoutData(data) {
     return {
       id: 'el' + (index + 1), type: imported.type, name: String(imported.name || definition.label),
       ...imported.grid, zIndex: Number(imported.zIndex) || index + 1,
-      attributes: { ...BASE_ATTRIBUTES, ...KIND_DEFAULT_ATTRIBUTES[definition.kind], ...definition.attributes, ...imported.attributes },
+      attributes: { ...defaultAttributesForElementType(imported.type), ...imported.attributes },
     };
   });
   importedState.nextElementNumber = importedState.elements.length + 1;
