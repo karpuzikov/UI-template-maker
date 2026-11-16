@@ -682,7 +682,7 @@ function updatePixelReadout(element) {
 function renderElementOutline() {
   propertiesPanel.append(createNode('h3', '', 'Layout'),
     createNode('p', 'muted', 'Drag elements from the left onto the grid. Drag to move, corner handle to resize.'),
-    createNode('p', 'muted', 'Drag on empty space (or Shift+drag anywhere) to select several. Double-click an element to edit its text.'),
+    createNode('p', 'muted', 'Drag on empty space or on a panel/dialog background (or Shift+drag anywhere) to select several; click a panel first to move it. Double-click an element to edit its text.'),
     createNode('p', 'muted', 'Keys: Ctrl+Z undo · Ctrl+Y redo · Del delete · Arrows move · Shift+Arrows resize · Ctrl+D duplicate · Esc deselect'));
   const fieldset = createNode('fieldset');
   fieldset.append(createNode('legend', '', `Elements (${state.elements.length})`));
@@ -745,12 +745,15 @@ function moveElementsFromStartPositions(elements, startPositions, columnDelta, r
   }
 }
 const startPositionsOf = elements => new Map(elements.map(element => [element.id, { column: element.column, row: element.row }]));
-stage.addEventListener('pointerdown', event => {
+// Marquee starts on empty space (also around the canvas), with Shift anywhere, or on an unselected
+// container (panel, card, dialog…) — so a full-size background panel doesn't block it. Click a container first to move it.
+canvasArea.addEventListener('pointerdown', event => {
   if (event.button !== 0 || event.target.closest('.inline-editor')) return;
   const node = event.target.closest('.el');
-  if (!node || event.shiftKey) { startMarqueeSelection(event, node); return; }
+  const element = node && findElementById(node.dataset.id);
+  const isUnselectedContainer = element && findElementDefinition(element.type).kind === 'container' && !selectedElementIds.includes(element.id);
+  if (!node || event.shiftKey || isUnselectedContainer) { startMarqueeSelection(event, node); return; }
   event.preventDefault();
-  const element = findElementById(node.dataset.id);
   if (!selectedElementIds.includes(element.id)) selectElement(element.id);
   const isResizing = event.target.classList.contains('handle');
   const start = { x: event.clientX, y: event.clientY, columnSpan: element.columnSpan, rowSpan: element.rowSpan };
@@ -783,7 +786,7 @@ function startMarqueeSelection(event, nodeUnderPointer) {
   const startX = event.clientX - stageRectangle.left, startY = event.clientY - stageRectangle.top;
   const marquee = createNode('div', 'marquee');
   stage.append(marquee);
-  stage.setPointerCapture(event.pointerId);
+  canvasArea.setPointerCapture(event.pointerId);
   let rectangle = { left: startX, top: startY, right: startX, bottom: startY };
   const onPointerMove = moveEvent => {
     const x = moveEvent.clientX - stageRectangle.left, y = moveEvent.clientY - stageRectangle.top;
@@ -791,13 +794,14 @@ function startMarqueeSelection(event, nodeUnderPointer) {
     Object.assign(marquee.style, { left: rectangle.left + 'px', top: rectangle.top + 'px', width: rectangle.right - rectangle.left + 'px', height: rectangle.bottom - rectangle.top + 'px' });
   };
   const onPointerUp = () => {
-    stage.removeEventListener('pointermove', onPointerMove);
-    stage.removeEventListener('pointerup', onPointerUp);
+    canvasArea.removeEventListener('pointermove', onPointerMove);
+    canvasArea.removeEventListener('pointerup', onPointerUp);
     marquee.remove();
     const wasClick = rectangle.right - rectangle.left < 3 && rectangle.bottom - rectangle.top < 3;
     if (wasClick) {
-      if (!event.shiftKey || !nodeUnderPointer) return selectElement(null);
+      if (!nodeUnderPointer) return selectElement(null);
       const id = nodeUnderPointer.dataset.id;
+      if (!event.shiftKey) return selectElement(id);
       return setSelection(selectedElementIds.includes(id) ? selectedElementIds.filter(other => other !== id) : [...selectedElementIds, id]);
     }
     const cellWidth = cellWidthPx() * zoom, cellHeight = cellHeightPx() * zoom;
@@ -806,8 +810,8 @@ function startMarqueeSelection(event, nodeUnderPointer) {
       element.row * cellHeight >= rectangle.top && (element.row + element.rowSpan) * cellHeight <= rectangle.bottom).map(element => element.id);
     setSelection(event.shiftKey ? [...new Set([...selectedElementIds, ...insideIds])] : insideIds);
   };
-  stage.addEventListener('pointermove', onPointerMove);
-  stage.addEventListener('pointerup', onPointerUp);
+  canvasArea.addEventListener('pointermove', onPointerMove);
+  canvasArea.addEventListener('pointerup', onPointerUp);
 }
 
 /* ---------- Inline text editing (double-click) ---------- */
