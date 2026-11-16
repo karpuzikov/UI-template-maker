@@ -1,0 +1,1261 @@
+{
+  "format": "ui-template-maker/v1",
+  "projectName": "Re-TROS release dialog",
+  "targetPlatform": "desktop",
+  "canvas": {
+    "widthPx": 720,
+    "heightPx": 708,
+    "columns": 360,
+    "rows": 354,
+    "cellWidthPx": 2,
+    "cellHeightPx": 2,
+    "backgroundColor": "#0f1115"
+  },
+  "coordinateSystem": "Origin top-left. Grid column/row are zero-based. px = grid × cell size. Higher zIndex is drawn on top.",
+  "elements": [
+    {
+      "type": "modal-dialog",
+      "name": "Release dialog",
+      "grid": {
+        "column": 0,
+        "row": 0,
+        "columnSpan": 360,
+        "rowSpan": 354
+      },
+      "zIndex": 1,
+      "attributes": {
+        "text": "",
+        "backgroundColor": "#16181d",
+        "borderColor": "#2b2e35",
+        "borderRadius": 4,
+        "shadow": false,
+        "notes": "Release details panel: header, release actions, folder path, explanation, track list."
+      }
+    },
+    {
+      "type": "heading",
+      "name": "Release title",
+      "grid": {
+        "column": 2,
+        "row": 2,
+        "columnSpan": 265,
+        "rowSpan": 14
+      },
+      "zIndex": 2,
+      "attributes": {
+        "text": "Re-TROS - Before the Applause [CD] (FLAC)",
+        "fontSize": 17,
+        "fontWeight": "700",
+        "textColor": "#ffffff"
+      }
+    },
+    {
+      "type": "icon-button",
+      "name": "Close button",
+      "grid": {
+        "column": 340,
+        "row": 5,
+        "columnSpan": 15,
+        "rowSpan": 15
+      },
+      "zIndex": 3,
+      "attributes": {
+        "glyph": "✕",
+        "fontSize": 14,
+        "backgroundColor": "#1f2228",
+        "borderColor": "#3a3f47",
+        "borderRadius": 8,
+        "textColor": "#e5e7eb"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Release status",
+      "grid": {
+        "column": 3,
+        "row": 17,
+        "columnSpan": 124,
+        "rowSpan": 8
+      },
+      "zIndex": 4,
+      "attributes": {
+        "text": "Retained · 9 included",
+        "fontSize": 12,
+        "textColor": "#9aa0aa"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Release format",
+      "grid": {
+        "column": 4,
+        "row": 29,
+        "columnSpan": 31,
+        "rowSpan": 7
+      },
+      "zIndex": 5,
+      "attributes": {
+        "text": "NEW · CD",
+        "fontSize": 11,
+        "fontWeight": "700",
+        "textColor": "#e5e7eb"
+      }
+    },
+    {
+      "type": "chip-tag",
+      "name": "Log score badge",
+      "grid": {
+        "column": 35,
+        "row": 28,
+        "columnSpan": 31,
+        "rowSpan": 8
+      },
+      "zIndex": 6,
+      "attributes": {
+        "text": "LOG 100%",
+        "fontSize": 10,
+        "fontWeight": "700",
+        "backgroundColor": "#2e7d5b",
+        "borderColor": "#2e7d5b",
+        "textColor": "#d1fae5",
+        "borderRadius": 4
+      }
+    },
+    {
+      "type": "chip-tag",
+      "name": "CUE badge",
+      "grid": {
+        "column": 69,
+        "row": 28,
+        "columnSpan": 16,
+        "rowSpan": 8
+      },
+      "zIndex": 7,
+      "attributes": {
+        "text": "CUE",
+        "fontSize": 10,
+        "fontWeight": "700",
+        "backgroundColor": "#f5c04a",
+        "borderColor": "#f5c04a",
+        "textColor": "#1a1a1a",
+        "borderRadius": 4
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Log file line",
+      "grid": {
+        "column": 4,
+        "row": 37,
+        "columnSpan": 153,
+        "rowSpan": 6
+      },
+      "zIndex": 8,
+      "attributes": {
+        "text": "Re-TROS - Before the Applause.log: 100% (EAC)",
+        "fontSize": 10,
+        "textColor": "#c9ccd2"
+      }
+    },
+    {
+      "type": "button",
+      "name": "Keep release button",
+      "grid": {
+        "column": 7,
+        "row": 48,
+        "columnSpan": 46,
+        "rowSpan": 15
+      },
+      "zIndex": 9,
+      "attributes": {
+        "text": "Keep release",
+        "fontSize": 13,
+        "fontWeight": "500",
+        "backgroundColor": "#1f2228",
+        "borderColor": "#4b5059",
+        "textColor": "#e5e7eb",
+        "borderRadius": 6
+      }
+    },
+    {
+      "type": "button",
+      "name": "Ignore release button",
+      "grid": {
+        "column": 57,
+        "row": 48,
+        "columnSpan": 54,
+        "rowSpan": 15
+      },
+      "zIndex": 10,
+      "attributes": {
+        "text": "Ignore release",
+        "fontSize": 13,
+        "fontWeight": "700",
+        "backgroundColor": "#7f1d1d",
+        "borderColor": "#b91c1c",
+        "textColor": "#fecaca",
+        "borderRadius": 6
+      }
+    },
+    {
+      "type": "button",
+      "name": "Album group button",
+      "grid": {
+        "column": 286,
+        "row": 48,
+        "columnSpan": 54,
+        "rowSpan": 17
+      },
+      "zIndex": 11,
+      "attributes": {
+        "text": "▸  Album group",
+        "fontSize": 12,
+        "fontWeight": "400",
+        "backgroundColor": "#1f2228",
+        "borderColor": "#3a3f47",
+        "textColor": "#c9ccd2",
+        "borderRadius": 6
+      }
+    },
+    {
+      "type": "icon-button",
+      "name": "Open folder button",
+      "grid": {
+        "column": 7,
+        "row": 70,
+        "columnSpan": 15,
+        "rowSpan": 15
+      },
+      "zIndex": 12,
+      "attributes": {
+        "glyph": "📁",
+        "fontSize": 14,
+        "backgroundColor": "#262a31",
+        "borderColor": "#3a3f47",
+        "borderRadius": 6
+      }
+    },
+    {
+      "type": "text-input",
+      "name": "Folder path",
+      "grid": {
+        "column": 26,
+        "row": 69,
+        "columnSpan": 314,
+        "rowSpan": 16
+      },
+      "zIndex": 13,
+      "attributes": {
+        "value": "C:\\!deemix Music\\Re-TROS\\RED\\Re-TROS - Before the Applause [CD] (FLAC)",
+        "fontFamily": "Consolas",
+        "fontSize": 12,
+        "fontWeight": "700",
+        "backgroundColor": "#111317",
+        "borderColor": "#3a3f47",
+        "textColor": "#e5e7eb",
+        "borderRadius": 6,
+        "notes": "Read-only path; folder button opens it."
+      }
+    },
+    {
+      "type": "paragraph",
+      "name": "Selection explanation",
+      "grid": {
+        "column": 3,
+        "row": 89,
+        "columnSpan": 334,
+        "rowSpan": 17
+      },
+      "zIndex": 14,
+      "attributes": {
+        "text": "Add: this is the selected edition representing the album after collection-wide optimization; its included recordings are covered elsewhere in the retained set.",
+        "fontSize": 12,
+        "textColor": "#d1d5db",
+        "wrapText": true
+      }
+    },
+    {
+      "type": "divider",
+      "name": "Header divider",
+      "grid": {
+        "column": 0,
+        "row": 109,
+        "columnSpan": 360,
+        "rowSpan": 1
+      },
+      "zIndex": 15,
+      "attributes": {
+        "backgroundColor": "#2b2e35"
+      }
+    },
+    {
+      "type": "heading",
+      "name": "Tracks heading",
+      "grid": {
+        "column": 3,
+        "row": 113,
+        "columnSpan": 44,
+        "rowSpan": 9
+      },
+      "zIndex": 16,
+      "attributes": {
+        "text": "Tracks",
+        "fontSize": 13,
+        "fontWeight": "700",
+        "textColor": "#ffffff"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 1 number",
+      "grid": {
+        "column": 9,
+        "row": 129,
+        "columnSpan": 11,
+        "rowSpan": 9
+      },
+      "zIndex": 17,
+      "attributes": {
+        "text": "1",
+        "fontSize": 12,
+        "textColor": "#9aa0aa",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 1 title",
+      "grid": {
+        "column": 19,
+        "row": 129,
+        "columnSpan": 119,
+        "rowSpan": 9
+      },
+      "zIndex": 18,
+      "attributes": {
+        "text": "Hum",
+        "fontSize": 12,
+        "textColor": "#e5e7eb"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 1 duration",
+      "grid": {
+        "column": 139,
+        "row": 129,
+        "columnSpan": 22,
+        "rowSpan": 9
+      },
+      "zIndex": 19,
+      "attributes": {
+        "text": "1:38",
+        "fontSize": 12,
+        "textColor": "#8fb0d0",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 1 note",
+      "grid": {
+        "column": 196,
+        "row": 130,
+        "columnSpan": 153,
+        "rowSpan": 8
+      },
+      "zIndex": 20,
+      "attributes": {
+        "text": "Same audio on 2 editions",
+        "fontSize": 11,
+        "textColor": "#c9ccd2",
+        "verticalAlign": "center"
+      }
+    },
+    {
+      "type": "divider",
+      "name": "Track 1 divider",
+      "grid": {
+        "column": 7,
+        "row": 144,
+        "columnSpan": 347,
+        "rowSpan": 1
+      },
+      "zIndex": 21,
+      "attributes": {
+        "backgroundColor": "#2b2e35"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 2 number",
+      "grid": {
+        "column": 9,
+        "row": 150,
+        "columnSpan": 11,
+        "rowSpan": 9
+      },
+      "zIndex": 22,
+      "attributes": {
+        "text": "2",
+        "fontSize": 12,
+        "textColor": "#9aa0aa",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 2 title",
+      "grid": {
+        "column": 19,
+        "row": 150,
+        "columnSpan": 119,
+        "rowSpan": 9
+      },
+      "zIndex": 23,
+      "attributes": {
+        "text": "Hailing Drums",
+        "fontSize": 12,
+        "textColor": "#e5e7eb"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 2 duration",
+      "grid": {
+        "column": 139,
+        "row": 150,
+        "columnSpan": 22,
+        "rowSpan": 9
+      },
+      "zIndex": 24,
+      "attributes": {
+        "text": "9:16",
+        "fontSize": 12,
+        "textColor": "#8fb0d0",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 2 note",
+      "grid": {
+        "column": 196,
+        "row": 150,
+        "columnSpan": 153,
+        "rowSpan": 8
+      },
+      "zIndex": 25,
+      "attributes": {
+        "text": "Same audio on 3 editions",
+        "fontSize": 11,
+        "textColor": "#c9ccd2",
+        "verticalAlign": "center"
+      }
+    },
+    {
+      "type": "divider",
+      "name": "Track 2 divider",
+      "grid": {
+        "column": 7,
+        "row": 164,
+        "columnSpan": 347,
+        "rowSpan": 1
+      },
+      "zIndex": 26,
+      "attributes": {
+        "backgroundColor": "#2b2e35"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 3 number",
+      "grid": {
+        "column": 9,
+        "row": 170,
+        "columnSpan": 11,
+        "rowSpan": 9
+      },
+      "zIndex": 27,
+      "attributes": {
+        "text": "3",
+        "fontSize": 12,
+        "textColor": "#9aa0aa",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 3 title",
+      "grid": {
+        "column": 19,
+        "row": 170,
+        "columnSpan": 119,
+        "rowSpan": 9
+      },
+      "zIndex": 28,
+      "attributes": {
+        "text": "Red Rum Aviv",
+        "fontSize": 12,
+        "textColor": "#e5e7eb"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 3 duration",
+      "grid": {
+        "column": 139,
+        "row": 170,
+        "columnSpan": 22,
+        "rowSpan": 9
+      },
+      "zIndex": 29,
+      "attributes": {
+        "text": "5:33",
+        "fontSize": 12,
+        "textColor": "#8fb0d0",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "chip-tag",
+      "name": "Track 3 remixes badge",
+      "grid": {
+        "column": 165,
+        "row": 169,
+        "columnSpan": 31,
+        "rowSpan": 12
+      },
+      "zIndex": 30,
+      "attributes": {
+        "text": "Remixes 1",
+        "fontSize": 10,
+        "fontWeight": "700",
+        "backgroundColor": "#2a1f3d",
+        "borderColor": "#8b5cf6",
+        "textColor": "#d8b4fe",
+        "borderRadius": 6
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 3 note",
+      "grid": {
+        "column": 196,
+        "row": 171,
+        "columnSpan": 153,
+        "rowSpan": 8
+      },
+      "zIndex": 31,
+      "attributes": {
+        "text": "Same audio on 1 edition",
+        "fontSize": 11,
+        "textColor": "#c9ccd2",
+        "verticalAlign": "center"
+      }
+    },
+    {
+      "type": "divider",
+      "name": "Track 3 divider",
+      "grid": {
+        "column": 7,
+        "row": 184,
+        "columnSpan": 347,
+        "rowSpan": 1
+      },
+      "zIndex": 32,
+      "attributes": {
+        "backgroundColor": "#2b2e35"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 4 number",
+      "grid": {
+        "column": 9,
+        "row": 191,
+        "columnSpan": 11,
+        "rowSpan": 9
+      },
+      "zIndex": 33,
+      "attributes": {
+        "text": "4",
+        "fontSize": 12,
+        "textColor": "#9aa0aa",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 4 title",
+      "grid": {
+        "column": 19,
+        "row": 191,
+        "columnSpan": 119,
+        "rowSpan": 9
+      },
+      "zIndex": 34,
+      "attributes": {
+        "text": "8+2+8 I",
+        "fontSize": 12,
+        "textColor": "#e5e7eb"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 4 duration",
+      "grid": {
+        "column": 139,
+        "row": 191,
+        "columnSpan": 22,
+        "rowSpan": 9
+      },
+      "zIndex": 35,
+      "attributes": {
+        "text": "4:48",
+        "fontSize": 12,
+        "textColor": "#8fb0d0",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "chip-tag",
+      "name": "Track 4 remixes badge",
+      "grid": {
+        "column": 165,
+        "row": 189,
+        "columnSpan": 31,
+        "rowSpan": 12
+      },
+      "zIndex": 36,
+      "attributes": {
+        "text": "Remixes 1",
+        "fontSize": 10,
+        "fontWeight": "700",
+        "backgroundColor": "#2a1f3d",
+        "borderColor": "#8b5cf6",
+        "textColor": "#d8b4fe",
+        "borderRadius": 6
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 4 note",
+      "grid": {
+        "column": 196,
+        "row": 191,
+        "columnSpan": 153,
+        "rowSpan": 8
+      },
+      "zIndex": 37,
+      "attributes": {
+        "text": "Same audio on 2 editions",
+        "fontSize": 11,
+        "textColor": "#c9ccd2",
+        "verticalAlign": "center"
+      }
+    },
+    {
+      "type": "divider",
+      "name": "Track 4 divider",
+      "grid": {
+        "column": 7,
+        "row": 205,
+        "columnSpan": 347,
+        "rowSpan": 1
+      },
+      "zIndex": 38,
+      "attributes": {
+        "backgroundColor": "#2b2e35"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 5 number",
+      "grid": {
+        "column": 9,
+        "row": 211,
+        "columnSpan": 11,
+        "rowSpan": 9
+      },
+      "zIndex": 39,
+      "attributes": {
+        "text": "5",
+        "fontSize": 12,
+        "textColor": "#9aa0aa",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 5 title",
+      "grid": {
+        "column": 19,
+        "row": 211,
+        "columnSpan": 119,
+        "rowSpan": 9
+      },
+      "zIndex": 40,
+      "attributes": {
+        "text": "8+2+8 II",
+        "fontSize": 12,
+        "textColor": "#e5e7eb"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 5 duration",
+      "grid": {
+        "column": 139,
+        "row": 211,
+        "columnSpan": 22,
+        "rowSpan": 9
+      },
+      "zIndex": 41,
+      "attributes": {
+        "text": "10:21",
+        "fontSize": 12,
+        "textColor": "#8fb0d0",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 5 note",
+      "grid": {
+        "column": 196,
+        "row": 212,
+        "columnSpan": 153,
+        "rowSpan": 8
+      },
+      "zIndex": 42,
+      "attributes": {
+        "text": "Same audio on 4 editions",
+        "fontSize": 11,
+        "textColor": "#c9ccd2",
+        "verticalAlign": "center"
+      }
+    },
+    {
+      "type": "divider",
+      "name": "Track 5 divider",
+      "grid": {
+        "column": 7,
+        "row": 226,
+        "columnSpan": 347,
+        "rowSpan": 1
+      },
+      "zIndex": 43,
+      "attributes": {
+        "backgroundColor": "#2b2e35"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 6 number",
+      "grid": {
+        "column": 9,
+        "row": 232,
+        "columnSpan": 11,
+        "rowSpan": 9
+      },
+      "zIndex": 44,
+      "attributes": {
+        "text": "6",
+        "fontSize": 12,
+        "textColor": "#9aa0aa",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 6 title",
+      "grid": {
+        "column": 19,
+        "row": 232,
+        "columnSpan": 119,
+        "rowSpan": 9
+      },
+      "zIndex": 45,
+      "attributes": {
+        "text": "Pigs in the River",
+        "fontSize": 12,
+        "textColor": "#e5e7eb"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 6 duration",
+      "grid": {
+        "column": 139,
+        "row": 232,
+        "columnSpan": 22,
+        "rowSpan": 9
+      },
+      "zIndex": 46,
+      "attributes": {
+        "text": "6:45",
+        "fontSize": 12,
+        "textColor": "#8fb0d0",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "chip-tag",
+      "name": "Track 6 live badge",
+      "grid": {
+        "column": 165,
+        "row": 230,
+        "columnSpan": 31,
+        "rowSpan": 12
+      },
+      "zIndex": 47,
+      "attributes": {
+        "text": "Live 1",
+        "fontSize": 10,
+        "fontWeight": "700",
+        "backgroundColor": "#12301f",
+        "borderColor": "#22c55e",
+        "textColor": "#86efac",
+        "borderRadius": 6
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 6 note",
+      "grid": {
+        "column": 196,
+        "row": 232,
+        "columnSpan": 153,
+        "rowSpan": 8
+      },
+      "zIndex": 48,
+      "attributes": {
+        "text": "Same audio on 4 editions",
+        "fontSize": 11,
+        "textColor": "#c9ccd2",
+        "verticalAlign": "center"
+      }
+    },
+    {
+      "type": "divider",
+      "name": "Track 6 divider",
+      "grid": {
+        "column": 7,
+        "row": 246,
+        "columnSpan": 347,
+        "rowSpan": 1
+      },
+      "zIndex": 49,
+      "attributes": {
+        "backgroundColor": "#2b2e35"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 7 number",
+      "grid": {
+        "column": 9,
+        "row": 254,
+        "columnSpan": 11,
+        "rowSpan": 9
+      },
+      "zIndex": 50,
+      "attributes": {
+        "text": "7",
+        "fontSize": 12,
+        "textColor": "#9aa0aa",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 7 title",
+      "grid": {
+        "column": 19,
+        "row": 254,
+        "columnSpan": 119,
+        "rowSpan": 9
+      },
+      "zIndex": 51,
+      "attributes": {
+        "text": "At Mosp Here",
+        "fontSize": 12,
+        "textColor": "#e5e7eb"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 7 duration",
+      "grid": {
+        "column": 138,
+        "row": 250,
+        "columnSpan": 24,
+        "rowSpan": 8
+      },
+      "zIndex": 52,
+      "attributes": {
+        "text": "12:08",
+        "fontSize": 12,
+        "fontWeight": "700",
+        "textColor": "#fbbf24",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "chip-tag",
+      "name": "Track 7 duration difference",
+      "grid": {
+        "column": 140,
+        "row": 259,
+        "columnSpan": 20,
+        "rowSpan": 7
+      },
+      "zIndex": 53,
+      "attributes": {
+        "text": "Δ449.5s",
+        "fontSize": 9,
+        "fontWeight": "700",
+        "backgroundColor": "#3a2e10",
+        "borderColor": "#b8860b",
+        "textColor": "#fcd34d",
+        "borderRadius": 3,
+        "notes": "Duration differs from other editions by this many seconds."
+      }
+    },
+    {
+      "type": "chip-tag",
+      "name": "Track 7 versions badge",
+      "grid": {
+        "column": 165,
+        "row": 252,
+        "columnSpan": 31,
+        "rowSpan": 12
+      },
+      "zIndex": 54,
+      "attributes": {
+        "text": "Versions 1",
+        "fontSize": 10,
+        "fontWeight": "700",
+        "backgroundColor": "#2e2510",
+        "borderColor": "#b8860b",
+        "textColor": "#fcd34d",
+        "borderRadius": 6
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 7 note",
+      "grid": {
+        "column": 196,
+        "row": 251,
+        "columnSpan": 153,
+        "rowSpan": 14
+      },
+      "zIndex": 55,
+      "attributes": {
+        "text": "Same audio on 3 editions; Also listed\non 1 edition (audio unverified)",
+        "fontSize": 11,
+        "textColor": "#c9ccd2",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "type": "divider",
+      "name": "Track 7 divider",
+      "grid": {
+        "column": 7,
+        "row": 270,
+        "columnSpan": 347,
+        "rowSpan": 1
+      },
+      "zIndex": 56,
+      "attributes": {
+        "backgroundColor": "#2b2e35"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 8 number",
+      "grid": {
+        "column": 9,
+        "row": 276,
+        "columnSpan": 11,
+        "rowSpan": 9
+      },
+      "zIndex": 57,
+      "attributes": {
+        "text": "8",
+        "fontSize": 12,
+        "textColor": "#9aa0aa",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 8 title",
+      "grid": {
+        "column": 19,
+        "row": 276,
+        "columnSpan": 119,
+        "rowSpan": 9
+      },
+      "zIndex": 58,
+      "attributes": {
+        "text": "The Last Dance, W",
+        "fontSize": 12,
+        "textColor": "#e5e7eb"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 8 duration",
+      "grid": {
+        "column": 139,
+        "row": 276,
+        "columnSpan": 22,
+        "rowSpan": 9
+      },
+      "zIndex": 59,
+      "attributes": {
+        "text": "6:41",
+        "fontSize": 12,
+        "textColor": "#8fb0d0",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 8 note",
+      "grid": {
+        "column": 196,
+        "row": 276,
+        "columnSpan": 153,
+        "rowSpan": 8
+      },
+      "zIndex": 60,
+      "attributes": {
+        "text": "Same audio on 2 editions",
+        "fontSize": 11,
+        "textColor": "#c9ccd2",
+        "verticalAlign": "center"
+      }
+    },
+    {
+      "type": "divider",
+      "name": "Track 8 divider",
+      "grid": {
+        "column": 7,
+        "row": 290,
+        "columnSpan": 347,
+        "rowSpan": 1
+      },
+      "zIndex": 61,
+      "attributes": {
+        "backgroundColor": "#2b2e35"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 9 number",
+      "grid": {
+        "column": 9,
+        "row": 296,
+        "columnSpan": 11,
+        "rowSpan": 9
+      },
+      "zIndex": 62,
+      "attributes": {
+        "text": "9",
+        "fontSize": 12,
+        "textColor": "#9aa0aa",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 9 title",
+      "grid": {
+        "column": 19,
+        "row": 296,
+        "columnSpan": 119,
+        "rowSpan": 9
+      },
+      "zIndex": 63,
+      "attributes": {
+        "text": "Sounds for Celebration",
+        "fontSize": 12,
+        "textColor": "#e5e7eb"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 9 duration",
+      "grid": {
+        "column": 139,
+        "row": 296,
+        "columnSpan": 22,
+        "rowSpan": 9
+      },
+      "zIndex": 64,
+      "attributes": {
+        "text": "7:02",
+        "fontSize": 12,
+        "textColor": "#8fb0d0",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "chip-tag",
+      "name": "Track 9 remixes badge",
+      "grid": {
+        "column": 165,
+        "row": 295,
+        "columnSpan": 31,
+        "rowSpan": 12
+      },
+      "zIndex": 65,
+      "attributes": {
+        "text": "Remixes 1",
+        "fontSize": 10,
+        "fontWeight": "700",
+        "backgroundColor": "#2a1f3d",
+        "borderColor": "#8b5cf6",
+        "textColor": "#d8b4fe",
+        "borderRadius": 6
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 9 note",
+      "grid": {
+        "column": 196,
+        "row": 297,
+        "columnSpan": 153,
+        "rowSpan": 8
+      },
+      "zIndex": 66,
+      "attributes": {
+        "text": "Same audio on 2 editions",
+        "fontSize": 11,
+        "textColor": "#c9ccd2",
+        "verticalAlign": "center"
+      }
+    },
+    {
+      "type": "divider",
+      "name": "Track 9 divider",
+      "grid": {
+        "column": 7,
+        "row": 310,
+        "columnSpan": 347,
+        "rowSpan": 1
+      },
+      "zIndex": 67,
+      "attributes": {
+        "backgroundColor": "#2b2e35"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 10 number",
+      "grid": {
+        "column": 9,
+        "row": 317,
+        "columnSpan": 11,
+        "rowSpan": 9
+      },
+      "zIndex": 68,
+      "attributes": {
+        "text": "10",
+        "fontSize": 12,
+        "textColor": "#9aa0aa",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 10 title",
+      "grid": {
+        "column": 19,
+        "row": 317,
+        "columnSpan": 111,
+        "rowSpan": 9
+      },
+      "zIndex": 69,
+      "attributes": {
+        "text": "As Mosp Here (Fujiya & Miyagi Remix)",
+        "fontSize": 12,
+        "textColor": "#8a93a3"
+      }
+    },
+    {
+      "type": "chip-tag",
+      "name": "Track 10 remix marker",
+      "grid": {
+        "column": 130,
+        "row": 316,
+        "columnSpan": 11,
+        "rowSpan": 11
+      },
+      "zIndex": 70,
+      "attributes": {
+        "text": "R",
+        "fontSize": 10,
+        "fontWeight": "700",
+        "backgroundColor": "#262a31",
+        "borderColor": "#4b5059",
+        "textColor": "#e5e7eb",
+        "borderRadius": 4
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 10 duration",
+      "grid": {
+        "column": 146,
+        "row": 317,
+        "columnSpan": 22,
+        "rowSpan": 9
+      },
+      "zIndex": 71,
+      "attributes": {
+        "text": "4:39",
+        "fontSize": 12,
+        "textColor": "#8a93a3",
+        "textAlign": "center"
+      }
+    },
+    {
+      "type": "text-label",
+      "name": "Track 10 note",
+      "grid": {
+        "column": 203,
+        "row": 317,
+        "columnSpan": 153,
+        "rowSpan": 8
+      },
+      "zIndex": 72,
+      "attributes": {
+        "text": "Excluded",
+        "fontSize": 11,
+        "textColor": "#c9ccd2",
+        "verticalAlign": "center"
+      }
+    },
+    {
+      "type": "divider",
+      "name": "Track 10 divider",
+      "grid": {
+        "column": 7,
+        "row": 331,
+        "columnSpan": 347,
+        "rowSpan": 1
+      },
+      "zIndex": 73,
+      "attributes": {
+        "backgroundColor": "#2b2e35"
+      }
+    }
+  ]
+}
