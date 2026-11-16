@@ -60,8 +60,13 @@ main{overflow:auto;display:flex;padding:28px}
 .el-suffix{margin-left:auto;opacity:.75;flex:none}
 .el-tag{position:absolute;top:-19px;left:-2px;font-size:11px;line-height:1.4;color:#fff;background:var(--accent);padding:1px 6px;border-radius:3px;white-space:nowrap;display:none;pointer-events:none;z-index:1}
 .el:hover .el-tag,.el.selected .el-tag{display:block}
-.handle{position:absolute;right:-6px;bottom:-6px;width:11px;height:11px;background:var(--accent);border:2px solid #fff;border-radius:2px;cursor:nwse-resize;display:none}
+/* 8 resize handles: corners and side middles */
+.handle{position:absolute;width:11px;height:11px;margin:-6px 0 0 -6px;background:var(--accent);border:2px solid #fff;border-radius:2px;display:none;z-index:2}
 .el.selected .handle{display:block}
+.handle[data-edge="n"]{left:50%;top:0;cursor:ns-resize}.handle[data-edge="s"]{left:50%;top:100%;cursor:ns-resize}
+.handle[data-edge="w"]{left:0;top:50%;cursor:ew-resize}.handle[data-edge="e"]{left:100%;top:50%;cursor:ew-resize}
+.handle[data-edge="nw"]{left:0;top:0;cursor:nwse-resize}.handle[data-edge="se"]{left:100%;top:100%;cursor:nwse-resize}
+.handle[data-edge="ne"]{left:100%;top:0;cursor:nesw-resize}.handle[data-edge="sw"]{left:0;top:100%;cursor:nesw-resize}
 .marquee{position:absolute;border:1px dashed var(--accent);background:rgba(79,140,255,.12);pointer-events:none;z-index:1000001}
 .inline-editor{position:absolute;z-index:1000001;background:#0b0d12;border:2px solid var(--accent);border-radius:4px;padding:0 6px;resize:none;outline:none;line-height:1.2;min-height:1.6em;min-width:60px}
 [hidden]{display:none!important}
@@ -513,9 +518,12 @@ function buildElementNode(element) {
 
   const tag = document.createElement('div');
   tag.className = 'el-tag'; tag.textContent = definition.label;
-  const handle = document.createElement('div');
-  handle.className = 'handle';
-  node.append(body, tag, handle);
+  node.append(body, tag);
+  for (const edge of ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw']) {
+    const handle = createNode('div', 'handle');
+    handle.dataset.edge = edge;
+    node.append(handle);
+  }
   return node;
 }
 function createNode(tagName, className, text, style) {
@@ -734,7 +742,7 @@ function updatePixelReadout(element) {
 }
 function renderElementOutline() {
   propertiesPanel.append(createNode('h3', '', 'Layout'),
-    createNode('p', 'muted', 'Drag elements from the left onto the grid. Drag to move, corner handle to resize.'),
+    createNode('p', 'muted', 'Drag elements from the left onto the grid. Drag to move, handles on corners and sides resize.'),
     createNode('p', 'muted', 'Drag on empty space or on a panel/dialog background (or Shift+drag anywhere) to select everything it touches; click a panel first to move it. Double-click an element to edit its text.'),
     createNode('p', 'muted', 'Keys: Ctrl+Z undo · Ctrl+Y redo · Del delete · Arrows move · Shift+Arrows resize · Ctrl+D duplicate · Esc deselect'));
   const fieldset = createNode('fieldset');
@@ -810,16 +818,19 @@ canvasArea.addEventListener('pointerdown', event => {
   if (!node || event.shiftKey || isUnselectedContainer) { startMarqueeSelection(event, node); return; }
   event.preventDefault();
   if (!selectedElementIds.includes(element.id)) selectElement(element.id);
-  const isResizing = event.target.classList.contains('handle');
-  const start = { x: event.clientX, y: event.clientY, columnSpan: element.columnSpan, rowSpan: element.rowSpan };
+  const resizeEdge = event.target.classList.contains('handle') ? event.target.dataset.edge : null;
+  const start = { x: event.clientX, y: event.clientY, column: element.column, row: element.row, columnSpan: element.columnSpan, rowSpan: element.rowSpan };
   const movingElements = selectedElements(), startPositions = startPositionsOf(movingElements);
   node.setPointerCapture(event.pointerId);
   const onPointerMove = moveEvent => {
     const columnDelta = Math.round((moveEvent.clientX - start.x) / (cellWidthPx() * zoom));
     const rowDelta = Math.round((moveEvent.clientY - start.y) / (cellHeightPx() * zoom));
-    if (isResizing) {
-      element.columnSpan = clamp(start.columnSpan + columnDelta, 1, state.columns - element.column);
-      element.rowSpan = clamp(start.rowSpan + rowDelta, 1, state.rows - element.row);
+    if (resizeEdge) {
+      const startRight = start.column + start.columnSpan, startBottom = start.row + start.rowSpan;
+      if (resizeEdge.includes('e')) element.columnSpan = clamp(start.columnSpan + columnDelta, 1, state.columns - start.column);
+      if (resizeEdge.includes('s')) element.rowSpan = clamp(start.rowSpan + rowDelta, 1, state.rows - start.row);
+      if (resizeEdge.includes('w')) { element.column = clamp(start.column + columnDelta, 0, startRight - 1); element.columnSpan = startRight - element.column; }
+      if (resizeEdge.includes('n')) { element.row = clamp(start.row + rowDelta, 0, startBottom - 1); element.rowSpan = startBottom - element.row; }
       positionElementNode(node, element);
     } else {
       moveElementsFromStartPositions(movingElements, startPositions, columnDelta, rowDelta);
