@@ -47,7 +47,10 @@ main{overflow:auto;display:flex;padding:28px}
 /* grid drawn above elements so opaque elements (dialogs, panels) don't hide it */
 #stage.show-grid::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:1000000;background-size:inherit;background-image:linear-gradient(to right,rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.07) 1px,transparent 1px)}
 .el{position:absolute;cursor:move;user-select:none;touch-action:none}
-.el.selected{outline:2px solid var(--accent);outline-offset:1px}
+/* element boundaries always visible while the grid is on (Grid off = clean preview) */
+#stage.show-grid .el{outline:1px dashed rgba(255,255,255,.22);outline-offset:-1px}
+#stage.show-grid .el:hover{outline:1px dashed var(--accent)}
+.el.selected,#stage.show-grid .el.selected{outline:2px solid var(--accent);outline-offset:1px}
 .el-body{position:absolute;inset:0;display:flex;gap:.5em;overflow:hidden;padding:0 .6em;white-space:pre;line-height:1.15}
 .el-body.wrap{white-space:pre-wrap}
 /* box = cap top..baseline so letters center optically; bottom keeps descenders inside */
