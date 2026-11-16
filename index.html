@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>UI Template Maker</title>
-<!-- Atkinson Hyperlegible Next (default: I/l/1 and 0/O look different), Roboto and Inter aren't installed on most PCs; the other listed fonts ship with Windows.
+<!-- Noto Color Emoji: Windows' own emoji font has no flags. Atkinson Hyperlegible Next (default: I/l/1 and 0/O look different), Roboto and Inter aren't installed on most PCs; the other listed fonts ship with Windows.
      shortcut: needs internet on first load (then browser cache), embed the font files if offline use matters. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Inter:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Noto+Color+Emoji&family=Inter:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap">
 <style>
 :root{--bg:#0f1115;--panel:#171a21;--panel2:#1e222b;--line:#2a2f3a;--text:#d7dbe3;--muted:#8a93a3;--accent:#4f8cff}
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font:13px/1.4 "Atkinson Hyperlegible Next",system-ui,"Segoe UI",sans-serif}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font:13px/1.4 "Atkinson Hyperlegible Next",system-ui,"Segoe UI",sans-serif,"Noto Color Emoji"}
 #app{display:grid;grid-template-rows:auto 1fr;grid-template-columns:250px 1fr 300px;height:100vh}
 header{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:8px 12px;background:var(--panel);border-bottom:1px solid var(--line)}
 header .brand{font-weight:700;color:#fff;margin-right:6px}
@@ -64,6 +64,20 @@ main{overflow:auto;display:flex;padding:28px}
 .el.selected .handle{display:block}
 .marquee{position:absolute;border:1px dashed var(--accent);background:rgba(79,140,255,.12);pointer-events:none;z-index:1000001}
 .inline-editor{position:absolute;z-index:1000001;background:#0b0d12;border:2px solid var(--accent);border-radius:4px;padding:0 6px;resize:none;outline:none;line-height:1.2;min-height:1.6em;min-width:60px}
+[hidden]{display:none!important}
+.field-control-with-emoji{display:flex;gap:4px;align-items:flex-start;min-width:0}
+.field-control-with-emoji > :first-child{flex:1;min-width:0}
+.emoji-button{padding:2px 5px;line-height:1.3}
+#emoji-picker{position:fixed;z-index:2000000;width:380px;height:440px;background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:0 12px 40px rgba(0,0,0,.6);display:flex;flex-direction:column;gap:6px;padding:8px}
+#emoji-picker-header{display:flex;gap:6px}
+#emoji-search{flex:1}
+#emoji-groups{display:flex;gap:2px}
+#emoji-groups button{flex:1;padding:3px 0;font-size:16px}
+#emoji-groups button.active{background:var(--accent);border-color:var(--accent)}
+#emoji-grid{flex:1;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));align-content:start;font-family:'Noto Color Emoji',sans-serif}
+.emoji-option{background:none;border:1px solid transparent;font-size:24px;padding:3px;line-height:1.2}
+.emoji-option:hover{background:var(--panel2);border-color:var(--accent)}
+#emoji-status{color:var(--muted);padding:8px;grid-column:1/-1;font-family:inherit}
 .drop-preview{position:absolute;background:rgba(79,140,255,.18);outline:1px dashed var(--accent);pointer-events:none}
 #props{border-left:1px solid var(--line);padding:10px 12px 24px}
 #props h3{margin:0;color:#fff;font-size:15px}
@@ -117,6 +131,12 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-radius:3px;padd
   <main id="canvas-area"><div id="stage" class="show-grid"></div></main>
 
   <aside id="props"></aside>
+</div>
+
+<div id="emoji-picker" hidden>
+  <div id="emoji-picker-header"><input id="emoji-search" placeholder="Search: ukraine, heart, fire…"><button id="emoji-picker-close" title="Close (Esc)">✕</button></div>
+  <div id="emoji-groups"></div>
+  <div id="emoji-grid"></div>
 </div>
 
 <script>
@@ -196,6 +216,7 @@ addElementType('Button', 'wdm', 160, 44, 'button', { text: 'Button' });
 addElementType('Icon Button', 'wdm', 44, 44, 'icon', { glyph: '⚙' });
 addElementType('Image', 'wdm', 240, 160, 'image');
 addElementType('Icon', 'wdm', 32, 32, 'icon', { ...noFrame });
+addElementType('Emoji', 'wdm', 40, 40, 'icon', { ...noFrame, glyph: '🙂', fontSize: 28 });
 addElementType('Avatar', 'wdm', 48, 48, 'image', { borderRadius: 999, altText: 'Avatar' });
 addElementType('Logo', 'wdm', 140, 48, 'image', { ...noFrame, altText: 'Logo', objectFit: 'contain' });
 addElementType('Text Input', 'wdm', 280, 44, 'input', { placeholder: 'Enter text' });
@@ -476,7 +497,7 @@ function buildElementNode(element) {
   const body = document.createElement('div');
   body.className = 'el-body' + (attributes.wrapText ? ' wrap' : '');
   Object.assign(body.style, {
-    fontFamily: attributes.fontFamily, fontSize: attributes.fontSize * zoom + 'px', fontWeight: attributes.fontWeight,
+    fontFamily: `${attributes.fontFamily}, 'Noto Color Emoji'`, fontSize: attributes.fontSize * zoom + 'px', fontWeight: attributes.fontWeight,
     fontStyle: attributes.italic ? 'italic' : 'normal', textAlign: attributes.textAlign, color: attributes.textColor,
     background: attributes.transparentBackground ? 'transparent' : attributes.backgroundColor,
     border: `${attributes.borderWidth * zoom}px solid ${attributes.borderColor}`, borderRadius: attributes.borderRadius * zoom + 'px',
@@ -622,8 +643,23 @@ function createField([key, label, type, options], target, onChange) {
     target[key] = type === 'checkbox' ? input.checked : type === 'number' ? Number(input.value) : input.value;
     onChange(key);
   });
-  const field = createNode('label', 'field' + (type === 'textarea' ? ' wide' : ''));
-  field.append(createNode('span', '', label), input);
+  if (!EMOJI_INSERTABLE_ATTRIBUTE_KEYS.includes(key)) {
+    const field = createNode('label', 'field' + (type === 'textarea' ? ' wide' : ''));
+    field.append(createNode('span', '', label), input);
+    return field;
+  }
+  // div, not label: a label would forward clicks on its text to the emoji button
+  const field = createNode('div', 'field' + (type === 'textarea' ? ' wide' : ''));
+  const control = createNode('div', 'field-control-with-emoji');
+  const emojiButton = createButton('🙂', () => openEmojiPicker(emojiButton, emoji => {
+    if (key === 'glyph') { input.value = emoji; input.dispatchEvent(new Event('input')); return; }
+    input.setRangeText(emoji, input.selectionStart ?? input.value.length, input.selectionEnd ?? input.value.length, 'end');
+    input.dispatchEvent(new Event('input'));
+    input.focus();
+  }), 'emoji-button');
+  emojiButton.title = key === 'glyph' ? 'Pick emoji' : 'Insert emoji at cursor';
+  control.append(input, emojiButton);
+  field.append(createNode('span', '', label), control);
   return field;
 }
 function appendFieldset(title, fields, target, onChange) {
@@ -825,6 +861,62 @@ function startMarqueeSelection(event, nodeUnderPointer) {
   canvasArea.addEventListener('pointerup', onPointerUp);
 }
 
+/* ---------- Emoji picker ---------- */
+// Full list incl. flags with names for search. shortcut: loaded from CDN (needs internet), embed the JSON if offline use matters.
+const UI_TEMPLATE_MAKER_EMOJI_DATA_URL = 'https://cdn.jsdelivr.net/npm/emojibase-data@16/en/compact.json';
+const EMOJI_INSERTABLE_ATTRIBUTE_KEYS = ['text', 'glyph', 'items', 'value', 'placeholder'];
+const EMOJI_GROUPS = [[0, '😀', 'Smileys'], [1, '👋', 'People'], [3, '🐶', 'Animals & nature'], [4, '🍔', 'Food'], [5, '✈️', 'Travel & places'],
+  [6, '⚽', 'Activities'], [7, '💡', 'Objects'], [8, '❤️', 'Symbols'], [9, '🏳️', 'Flags']];
+let emojiListPromise = null, emojiPickerGroup = 0, emojiPickerOnPick = null;
+function loadEmojiList() {
+  emojiListPromise ??= fetch(UI_TEMPLATE_MAKER_EMOJI_DATA_URL)
+    .then(response => { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
+    .then(list => list.filter(emoji => EMOJI_GROUPS.some(([group]) => group === emoji.group)).sort((a, b) => a.order - b.order))
+    .catch(error => { emojiListPromise = null; throw error; });
+  return emojiListPromise;
+}
+function openEmojiPicker(anchorButton, onPick) {
+  emojiPickerOnPick = onPick;
+  const picker = $('emoji-picker'), anchor = anchorButton.getBoundingClientRect();
+  picker.hidden = false;
+  picker.style.left = clamp(anchor.right - picker.offsetWidth, 8, window.innerWidth - picker.offsetWidth - 8) + 'px';
+  picker.style.top = clamp(anchor.bottom + 4, 8, window.innerHeight - picker.offsetHeight - 8) + 'px';
+  $('emoji-search').value = '';
+  $('emoji-search').focus();
+  renderEmojiGrid();
+}
+const closeEmojiPicker = () => { $('emoji-picker').hidden = true; emojiPickerOnPick = null; };
+async function renderEmojiGrid() {
+  const grid = $('emoji-grid'), searchText = $('emoji-search').value.trim().toLowerCase();
+  $('emoji-groups').querySelectorAll('button').forEach(button => button.classList.toggle('active', !searchText && Number(button.dataset.group) === emojiPickerGroup));
+  grid.replaceChildren(createNode('div', '', 'Loading emoji…', { gridColumn: '1/-1' }));
+  grid.firstChild.id = 'emoji-status';
+  let emojiList;
+  try { emojiList = await loadEmojiList(); }
+  catch (error) { grid.firstChild.textContent = `Could not load the emoji list (${error.message}). Check the internet connection, or use Win + . to type emoji.`; return; }
+  const matching = searchText
+    ? emojiList.filter(emoji => emoji.label.toLowerCase().includes(searchText) || emoji.tags?.some(tag => tag.toLowerCase().includes(searchText)))
+    : emojiList.filter(emoji => emoji.group === emojiPickerGroup);
+  grid.replaceChildren(...matching.map(emoji => {
+    const option = createNode('button', 'emoji-option', emoji.unicode);
+    option.title = emoji.label;
+    option.addEventListener('click', () => { const onPick = emojiPickerOnPick; closeEmojiPicker(); onPick(emoji.unicode); });
+    return option;
+  }));
+  if (!matching.length) { grid.append(createNode('div', '', 'No emoji found.')); grid.lastChild.id = 'emoji-status'; }
+}
+for (const [group, icon, name] of EMOJI_GROUPS) {
+  const button = createButton(icon, () => { emojiPickerGroup = group; $('emoji-search').value = ''; renderEmojiGrid(); });
+  button.dataset.group = group; button.title = name;
+  $('emoji-groups').append(button);
+}
+$('emoji-search').addEventListener('input', renderEmojiGrid);
+$('emoji-picker-close').addEventListener('click', closeEmojiPicker);
+$('emoji-picker').addEventListener('keydown', event => { if (event.key === 'Escape') closeEmojiPicker(); });
+document.addEventListener('pointerdown', event => {
+  if (!$('emoji-picker').hidden && !event.target.closest('#emoji-picker, .emoji-button')) closeEmojiPicker();
+});
+
 /* ---------- Inline text editing (double-click) ---------- */
 const INLINE_EDITED_ATTRIBUTE_BY_KIND = { text: 'text', button: 'text', container: 'text', toggle: 'text', media: 'text', list: 'items', input: 'value', icon: 'glyph', image: 'altText' };
 stage.addEventListener('dblclick', event => {
@@ -839,7 +931,7 @@ function openInlineTextEditor(element, node, attributeKey) {
   const attributes = element.attributes;
   const editor = createNode('textarea', 'inline-editor', undefined, {
     left: node.style.left, top: node.style.top, width: node.style.width, height: node.style.height,
-    fontFamily: attributes.fontFamily, fontSize: attributes.fontSize * zoom + 'px', fontWeight: attributes.fontWeight,
+    fontFamily: `${attributes.fontFamily}, 'Noto Color Emoji'`, fontSize: attributes.fontSize * zoom + 'px', fontWeight: attributes.fontWeight,
     color: attributes.textColor, textAlign: attributes.textAlign,
   });
   editor.value = attributes[attributeKey] ?? '';
