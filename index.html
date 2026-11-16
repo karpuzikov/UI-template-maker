@@ -108,6 +108,9 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-radius:3px;padd
 'use strict';
 const UI_TEMPLATE_MAKER_EXPORT_FORMAT = 'ui-template-maker/v1';
 const UI_TEMPLATE_MAKER_STORAGE_KEY = 'ui-template-maker-state';
+const UI_TEMPLATE_MAKER_LAST_USED_ATTRIBUTES_KEY = 'ui-template-maker-last-used-attributes';
+// Content (not style) is never carried over to the next element of the same type.
+const ATTRIBUTES_NOT_REMEMBERED = ['text', 'items', 'value', 'placeholder', 'imageSource', 'altText', 'mediaSource', 'description', 'notes'];
 const PLATFORM_NAMES = { w: 'Web', d: 'Desktop', m: 'Mobile' };
 const FONT_FAMILIES = ['system-ui', 'Segoe UI', 'Roboto', 'Inter', 'Arial', 'Helvetica', 'Verdana', 'Georgia', 'Times New Roman', 'Consolas', 'Courier New', 'monospace'];
 const CANVAS_PRESETS = [
@@ -291,6 +294,7 @@ const paletteCategoryForGroups = groups => groups === 'wdm' ? 'Common' : platfor
 const $ = id => document.getElementById(id);
 const stage = $('stage'), canvasArea = $('canvas-area'), propertiesPanel = $('props');
 let state = loadSavedStateOrNull() || createEmptyState();
+let lastUsedAttributesByElementType = loadLastUsedAttributes();
 let selectedElementId = null, zoomMode = '1', zoom = 1, paletteFilter = 'all', paletteSearchText = '';
 
 function createEmptyState() {
@@ -301,6 +305,16 @@ function loadSavedStateOrNull() {
     const saved = localStorage.getItem(UI_TEMPLATE_MAKER_STORAGE_KEY);
     return saved ? JSON.parse(saved) : null;
   } catch (error) { console.warn('UI Template Maker: could not load autosave', error); return null; }
+}
+function loadLastUsedAttributes() {
+  try { return JSON.parse(localStorage.getItem(UI_TEMPLATE_MAKER_LAST_USED_ATTRIBUTES_KEY)) || {}; }
+  catch (error) { console.warn('UI Template Maker: could not load remembered values', error); return {}; }
+}
+function rememberAttributeForElementType(type, key, value) {
+  if (ATTRIBUTES_NOT_REMEMBERED.includes(key)) return;
+  (lastUsedAttributesByElementType[type] ??= {})[key] = value;
+  try { localStorage.setItem(UI_TEMPLATE_MAKER_LAST_USED_ATTRIBUTES_KEY, JSON.stringify(lastUsedAttributesByElementType)); }
+  catch (error) { console.warn('UI Template Maker: could not save remembered values', error); }
 }
 function saveState() {
   try { localStorage.setItem(UI_TEMPLATE_MAKER_STORAGE_KEY, JSON.stringify(state)); }
@@ -326,7 +340,7 @@ function addElementFromCatalog(type, column, row) {
     columnSpan: Math.max(1, Math.round(definition.widthPx / cellWidthPx())),
     rowSpan: Math.max(1, Math.round(definition.heightPx / cellHeightPx())),
     zIndex: state.elements.reduce((max, other) => Math.max(max, other.zIndex), 0) + 1,
-    attributes: { ...BASE_ATTRIBUTES, ...KIND_DEFAULT_ATTRIBUTES[definition.kind], ...definition.attributes },
+    attributes: { ...BASE_ATTRIBUTES, ...KIND_DEFAULT_ATTRIBUTES[definition.kind], ...definition.attributes, ...lastUsedAttributesByElementType[type] },
   };
   state.nextElementNumber++;
   clampElementToGrid(element);
@@ -519,7 +533,7 @@ function createField([key, label, type, options], target, onChange) {
   input.addEventListener('input', () => {
     if (type === 'number' && input.value === '') return;
     target[key] = type === 'checkbox' ? input.checked : type === 'number' ? Number(input.value) : input.value;
-    onChange();
+    onChange(key);
   });
   const field = createNode('label', 'field' + (type === 'textarea' ? ' wide' : ''));
   field.append(createNode('span', '', label), input);
@@ -557,7 +571,10 @@ function renderPropertiesPanel() {
 
   for (const sectionKey of sectionKeysForKind(definition.kind)) {
     const [title, fields] = FIELD_SECTIONS[sectionKey];
-    appendFieldset(title, fields, element.attributes, () => onElementChanged(element));
+    appendFieldset(title, fields, element.attributes, key => {
+      rememberAttributeForElementType(element.type, key, element.attributes[key]);
+      onElementChanged(element);
+    });
   }
   const layoutFieldset = appendFieldset('Layout (grid cells)', [['name', 'Name (ID for AI)', 'text'], ['column', 'Column', 'number'], ['row', 'Row', 'number'],
     ['columnSpan', 'Width (cols)', 'number'], ['rowSpan', 'Height (rows)', 'number'], ['zIndex', 'Layer (z)', 'number']], element, () => onElementChanged(element));
