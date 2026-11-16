@@ -105,7 +105,7 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-radius:3px;padd
     <label>Cols <input id="grid-columns" type="number" min="1" max="400"></label>
     <label>Rows <input id="grid-rows" type="number" min="1" max="400"></label>
     <label title="Sets columns and rows from a cell size">Cell px <input id="grid-cell-size" type="number" min="2" placeholder="—"></label>
-    <label>BG <input id="canvas-background" type="color"></label>
+    <label>BG <input id="canvas-background" type="color"></label><button id="canvas-background-reset" class="emoji-button" title="Reset to default">↺</button>
     <label><input id="show-grid" type="checkbox" checked> Grid</label>
     <label>Zoom <select id="zoom-mode"><option value="fit">Fit</option><option value="0.25">25%</option><option value="0.5">50%</option><option value="0.75">75%</option><option value="1" selected>100%</option><option value="1.5">150%</option><option value="2">200%</option></select></label>
     <span class="spacer"></span>
@@ -626,7 +626,7 @@ function renderPalette() {
 }
 
 /* ---------- Rendering: properties ---------- */
-function createField([key, label, type, options], target, onChange) {
+function createField([key, label, type, options], target, onChange, defaultValues) {
   let input;
   if (type === 'select') {
     input = document.createElement('select');
@@ -644,6 +644,14 @@ function createField([key, label, type, options], target, onChange) {
     target[key] = type === 'checkbox' ? input.checked : type === 'number' ? Number(input.value) : input.value;
     onChange(key);
   });
+  if (type === 'color' && defaultValues) {
+    const field = createNode('div', 'field');
+    const control = createNode('div', 'field-control-with-emoji');
+    control.style.alignItems = 'center';
+    control.append(input, createColorResetButton(input, defaultValues[key]));
+    field.append(createNode('span', '', label), control);
+    return field;
+  }
   if (!EMOJI_INSERTABLE_ATTRIBUTE_KEYS.includes(key)) {
     const field = createNode('label', 'field' + (type === 'textarea' ? ' wide' : ''));
     field.append(createNode('span', '', label), input);
@@ -663,10 +671,15 @@ function createField([key, label, type, options], target, onChange) {
   field.append(createNode('span', '', label), control);
   return field;
 }
-function appendFieldset(title, fields, target, onChange) {
+function createColorResetButton(colorInput, defaultColor) {
+  const button = createButton('↺', () => { colorInput.value = defaultColor; colorInput.dispatchEvent(new Event('input')); }, 'emoji-button');
+  button.title = `Reset to default (${defaultColor})`;
+  return button;
+}
+function appendFieldset(title, fields, target, onChange, defaultValues) {
   const fieldset = createNode('fieldset');
   fieldset.append(createNode('legend', '', title));
-  for (const field of fields) fieldset.append(createField(field, target, onChange));
+  for (const field of fields) fieldset.append(createField(field, target, onChange, defaultValues));
   propertiesPanel.append(fieldset);
   return fieldset;
 }
@@ -704,7 +717,7 @@ function renderPropertiesPanel() {
     appendFieldset(title, fields, element.attributes, key => {
       rememberAttributeForElementType(element.type, key, element.attributes[key]);
       onElementChanged(element);
-    });
+    }, defaultAttributesForElementType(element.type));
   }
   const layoutFieldset = appendFieldset('Layout (grid cells)', [['name', 'Name (ID for AI)', 'text'], ['column', 'Column', 'number'], ['row', 'Row', 'number'],
     ['columnSpan', 'Width (cols)', 'number'], ['rowSpan', 'Height (rows)', 'number'], ['zIndex', 'Layer (z)', 'number']], element, () => onElementChanged(element));
@@ -1102,6 +1115,10 @@ $('grid-cell-size').addEventListener('change', event => {
   saveState(); renderEverything();
 });
 $('canvas-background').addEventListener('input', event => { state.canvasBackground = event.target.value; saveState(); renderStage(); });
+$('canvas-background-reset').addEventListener('click', () => {
+  $('canvas-background').value = createEmptyState().canvasBackground;
+  $('canvas-background').dispatchEvent(new Event('input'));
+});
 $('show-grid').addEventListener('change', event => { state.showGrid = event.target.checked; saveState(); renderStage(); });
 $('zoom-mode').addEventListener('change', event => { zoomMode = event.target.value; renderStage(); });
 // Empty = nothing visible. Containers, dividers, images, media, ranges and toggles always draw something, so they stay.
