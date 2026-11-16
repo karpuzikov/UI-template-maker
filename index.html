@@ -41,8 +41,10 @@ main{overflow:auto;display:flex;padding:28px}
 #stage.show-grid{background-image:linear-gradient(to right,rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.07) 1px,transparent 1px)}
 .el{position:absolute;cursor:move;user-select:none;touch-action:none}
 .el.selected{outline:2px solid var(--accent);outline-offset:1px}
-.el-body{position:absolute;inset:0;display:flex;gap:.5em;overflow:hidden;padding:0 .6em;white-space:pre-wrap;line-height:1.15}
-.el-content{min-width:0;text-box:trim-both cap text}
+.el-body{position:absolute;inset:0;display:flex;gap:.5em;overflow:hidden;padding:0 .6em;white-space:pre;line-height:1.15}
+.el-body.wrap{white-space:pre-wrap}
+.el-content{flex:none;min-width:0;text-box:trim-both cap text}
+.el-body.wrap .el-content{flex:0 1 auto}
 .el-fill{flex:1;align-self:stretch;min-width:0;display:flex}
 .el-suffix{margin-left:auto;opacity:.75;flex:none}
 .el-tag{position:absolute;top:-19px;left:-2px;font:11px system-ui;color:#fff;background:var(--accent);padding:1px 6px;border-radius:3px;white-space:nowrap;display:none;pointer-events:none;z-index:1}
@@ -120,7 +122,7 @@ const CANVAS_PRESETS = [
 
 /* ---------- Attribute schema ---------- */
 const BASE_ATTRIBUTES = {
-  text: '', fontFamily: 'system-ui', fontSize: 14, fontWeight: '400', italic: false, textAlign: 'left', verticalAlign: 'center', textColor: '#e5e7eb',
+  text: '', fontFamily: 'system-ui', fontSize: 14, fontWeight: '400', italic: false, wrapText: false, textAlign: 'left', verticalAlign: 'center', textColor: '#e5e7eb',
   backgroundColor: '#262b36', transparentBackground: false, borderColor: '#3a4150', borderWidth: 1, borderRadius: 6, opacity: 1, shadow: false,
   glyph: '', notes: '',
 };
@@ -138,7 +140,7 @@ const KIND_DEFAULT_ATTRIBUTES = {
 };
 const FIELD_SECTIONS = {
   text: ['Text', [['text', 'Text', 'textarea'], ['fontFamily', 'Font', 'select', FONT_FAMILIES], ['fontSize', 'Size px', 'number'],
-    ['fontWeight', 'Weight', 'select', ['300', '400', '500', '600', '700', '800']], ['italic', 'Italic', 'checkbox'],
+    ['fontWeight', 'Weight', 'select', ['300', '400', '500', '600', '700', '800']], ['italic', 'Italic', 'checkbox'], ['wrapText', 'Wrap text', 'checkbox'],
     ['textAlign', 'Align', 'select', ['left', 'center', 'right', 'justify']], ['verticalAlign', 'Vertical', 'select', ['top', 'center', 'bottom']],
     ['textColor', 'Text color', 'color']]],
   icon: ['Icon', [['glyph', 'Icon / glyph', 'text']]],
@@ -169,7 +171,7 @@ const noFrame = { transparentBackground: true, borderWidth: 0 };
 // Common
 addElementType('Heading', 'wdm', 320, 48, 'text', { text: 'Heading', fontSize: 28, fontWeight: '700' });
 addElementType('Text / Label', 'wdm', 200, 28, 'text', { text: 'Label' });
-addElementType('Paragraph', 'wdm', 400, 96, 'text', { text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', verticalAlign: 'top' });
+addElementType('Paragraph', 'wdm', 400, 96, 'text', { text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', verticalAlign: 'top', wrapText: true });
 addElementType('Link', 'wdm', 120, 28, 'text', { text: 'Link', textColor: '#60a5fa' });
 addElementType('Button', 'wdm', 160, 44, 'button', { text: 'Button' });
 addElementType('Icon Button', 'wdm', 44, 44, 'icon', { glyph: '⚙' });
@@ -181,7 +183,7 @@ addElementType('Text Input', 'wdm', 280, 44, 'input', { placeholder: 'Enter text
 addElementType('Password Input', 'wdm', 280, 44, 'input', { placeholder: 'Password', glyph: '👁' });
 addElementType('Search Field', 'wdm', 280, 44, 'input', { placeholder: 'Search…', glyph: '🔍' });
 addElementType('Number Input', 'wdm', 120, 44, 'input', { value: '0', glyph: '⇕' });
-addElementType('Text Area', 'wdm', 320, 120, 'input', { placeholder: 'Multi-line text', verticalAlign: 'top' });
+addElementType('Text Area', 'wdm', 320, 120, 'input', { placeholder: 'Multi-line text', verticalAlign: 'top', wrapText: true });
 addElementType('Dropdown / Select', 'wdm', 240, 44, 'input', { value: 'Option 1', glyph: '▾' });
 addElementType('Date Picker', 'wdm', 200, 44, 'input', { placeholder: 'DD.MM.YYYY', glyph: '📅' });
 addElementType('Time Picker', 'wdm', 160, 44, 'input', { placeholder: 'HH:MM', glyph: '🕒' });
@@ -232,7 +234,7 @@ addElementType('Search Bar', 'w', 600, 48, 'input', { placeholder: 'Search the s
 addElementType('Cookie Banner', 'w', 1200, 72, 'text', { text: 'We use cookies.', glyph: '[Accept]  [Settings]', transparentBackground: false, borderWidth: 1, borderRadius: 0 });
 addElementType('Code Block', 'w', 480, 160, 'text', { text: 'const hello = "world";', fontFamily: 'Consolas', transparentBackground: false, backgroundColor: '#0d1117', borderWidth: 1, verticalAlign: 'top' });
 addElementType('Embed / iframe', 'w', 480, 320, 'media', { glyph: '⧉', text: 'Embedded content' });
-addElementType('Rich Text Editor', 'w', 600, 300, 'input', { placeholder: 'B  I  U  |  ≡  •  🔗\n\nStart typing…', verticalAlign: 'top' });
+addElementType('Rich Text Editor', 'w', 600, 300, 'input', { placeholder: 'B  I  U  |  ≡  •  🔗\n\nStart typing…', verticalAlign: 'top', wrapText: true });
 addElementType('Back to Top Button', 'w', 48, 48, 'icon', { glyph: '↑', borderRadius: 999 });
 // Desktop
 addElementType('Window Frame', 'd', 800, 600, 'container', { text: 'Window', borderRadius: 8 });
@@ -377,7 +379,7 @@ function buildElementNode(element) {
   positionElementNode(node, element);
 
   const body = document.createElement('div');
-  body.className = 'el-body';
+  body.className = 'el-body' + (attributes.wrapText ? ' wrap' : '');
   Object.assign(body.style, {
     fontFamily: attributes.fontFamily, fontSize: attributes.fontSize * zoom + 'px', fontWeight: attributes.fontWeight,
     fontStyle: attributes.italic ? 'italic' : 'normal', textAlign: attributes.textAlign, color: attributes.textColor,
