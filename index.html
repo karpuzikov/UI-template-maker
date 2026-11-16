@@ -518,7 +518,7 @@ function renderListContent(attributes) {
   }
   const horizontal = attributes.orientation === 'horizontal';
   const list = createNode('div', 'el-fill', undefined, {
-    flexDirection: horizontal ? 'row' : 'column', gap: horizontal ? '.4em' : '.15em',
+    flexDirection: horizontal ? 'row' : 'column', gap: horizontal ? '.4em' : '.15em', padding: horizontal ? 0 : '.4em 0',
     alignItems: horizontal ? 'center' : 'stretch', justifyContent: horizontal ? { left: 'flex-start', center: 'space-around', right: 'flex-end', justify: 'space-between' }[attributes.textAlign] : 'flex-start',
   });
   lines.forEach((line, index) => list.append(createNode('div', '', line, { padding: '.3em .6em', ...highlight(index) })));
