@@ -706,7 +706,7 @@ function renderPropertiesPanel() {
   if (!element) { renderElementOutline(); return; }
   const definition = findElementDefinition(element.type);
   propertiesPanel.append(createNode('h3', '', definition.label), createNode('div', 'muted', `${platformNamesForGroups(definition.groups)} · ${definition.kind}`));
-  if (selectedElementIds.length > 1) propertiesPanel.append(createNode('p', '', `${selectedElementIds.length} elements selected — drag or arrows move all, Del deletes all. Settings below are for the last one.`, { color: 'var(--accent)' }));
+  if (selectedElementIds.length > 1) propertiesPanel.append(createNode('p', '', `${selectedElementIds.length} elements selected — drag, arrows or resize handles change all, Del deletes all. Settings below are for the last one.`, { color: 'var(--accent)' }));
   const actions = createNode('div', 'actions');
   actions.append(
     createButton('Duplicate', duplicateSelectedElement),
@@ -805,7 +805,16 @@ function moveElementsFromStartPositions(elements, startPositions, columnDelta, r
     positionElementNode(nodeOfElement(element), element);
   }
 }
-const startPositionsOf = elements => new Map(elements.map(element => [element.id, { column: element.column, row: element.row }]));
+const startPositionsOf = elements => new Map(elements.map(element => [element.id, { column: element.column, row: element.row, columnSpan: element.columnSpan, rowSpan: element.rowSpan }]));
+// Every selected element gets the same change on the grabbed side(s); each is limited by its own minimum size and the canvas edge.
+function resizeElementFromStart(element, start, edge, columnDelta, rowDelta) {
+  const startRight = start.column + start.columnSpan, startBottom = start.row + start.rowSpan;
+  if (edge.includes('e')) element.columnSpan = clamp(start.columnSpan + columnDelta, 1, state.columns - start.column);
+  if (edge.includes('s')) element.rowSpan = clamp(start.rowSpan + rowDelta, 1, state.rows - start.row);
+  if (edge.includes('w')) { element.column = clamp(start.column + columnDelta, 0, startRight - 1); element.columnSpan = startRight - element.column; }
+  if (edge.includes('n')) { element.row = clamp(start.row + rowDelta, 0, startBottom - 1); element.rowSpan = startBottom - element.row; }
+  positionElementNode(nodeOfElement(element), element);
+}
 // Marquee starts on empty space (also around the canvas), with Shift anywhere, or on an unselected
 // container (panel, card, dialog…) — so a full-size background panel doesn't block it. Click a container first to move it.
 canvasArea.addEventListener('pointerdown', event => {
@@ -819,19 +828,14 @@ canvasArea.addEventListener('pointerdown', event => {
   event.preventDefault();
   if (!selectedElementIds.includes(element.id)) selectElement(element.id);
   const resizeEdge = event.target.classList.contains('handle') ? event.target.dataset.edge : null;
-  const start = { x: event.clientX, y: event.clientY, column: element.column, row: element.row, columnSpan: element.columnSpan, rowSpan: element.rowSpan };
+  const start = { x: event.clientX, y: event.clientY };
   const movingElements = selectedElements(), startPositions = startPositionsOf(movingElements);
   node.setPointerCapture(event.pointerId);
   const onPointerMove = moveEvent => {
     const columnDelta = Math.round((moveEvent.clientX - start.x) / (cellWidthPx() * zoom));
     const rowDelta = Math.round((moveEvent.clientY - start.y) / (cellHeightPx() * zoom));
     if (resizeEdge) {
-      const startRight = start.column + start.columnSpan, startBottom = start.row + start.rowSpan;
-      if (resizeEdge.includes('e')) element.columnSpan = clamp(start.columnSpan + columnDelta, 1, state.columns - start.column);
-      if (resizeEdge.includes('s')) element.rowSpan = clamp(start.rowSpan + rowDelta, 1, state.rows - start.row);
-      if (resizeEdge.includes('w')) { element.column = clamp(start.column + columnDelta, 0, startRight - 1); element.columnSpan = startRight - element.column; }
-      if (resizeEdge.includes('n')) { element.row = clamp(start.row + rowDelta, 0, startBottom - 1); element.rowSpan = startBottom - element.row; }
-      positionElementNode(node, element);
+      for (const selected of movingElements) resizeElementFromStart(selected, startPositions.get(selected.id), resizeEdge, columnDelta, rowDelta);
     } else {
       moveElementsFromStartPositions(movingElements, startPositions, columnDelta, rowDelta);
     }
@@ -1004,12 +1008,10 @@ document.addEventListener('keydown', event => {
   const arrowDeltas = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[event.key];
   if (!arrowDeltas) return;
   event.preventDefault();
-  if (event.shiftKey) { element.columnSpan += arrowDeltas[0]; element.rowSpan += arrowDeltas[1]; onElementChanged(element); }
-  else {
-    const movingElements = selectedElements();
-    moveElementsFromStartPositions(movingElements, startPositionsOf(movingElements), ...arrowDeltas);
-    saveState();
-  }
+  const movingElements = selectedElements(), startPositions = startPositionsOf(movingElements);
+  if (event.shiftKey) for (const selected of movingElements) resizeElementFromStart(selected, startPositions.get(selected.id), 'se', ...arrowDeltas);
+  else moveElementsFromStartPositions(movingElements, startPositions, ...arrowDeltas);
+  saveState();
   renderPropertiesPanel();
 });
 window.addEventListener('resize', () => { if (zoomMode === 'fit') renderStage(); });
