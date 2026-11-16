@@ -752,6 +752,8 @@ const startPositionsOf = elements => new Map(elements.map(element => [element.id
 // container (panel, card, dialog…) — so a full-size background panel doesn't block it. Click a container first to move it.
 canvasArea.addEventListener('pointerdown', event => {
   if (event.button !== 0 || event.target.closest('.inline-editor')) return;
+  // preventDefault below keeps focus where it was (e.g. Zoom or a property field), which swallowed Delete/arrows.
+  document.activeElement?.blur();
   const node = event.target.closest('.el');
   const element = node && findElementById(node.dataset.id);
   const isUnselectedContainer = element && findElementDefinition(element.type).kind === 'container' && !selectedElementIds.includes(element.id);
