@@ -390,7 +390,7 @@ function buildElementNode(element) {
   body.append(...renderElementContent(definition, attributes));
 
   const tag = document.createElement('div');
-  tag.className = 'el-tag'; tag.textContent = element.name;
+  tag.className = 'el-tag'; tag.textContent = definition.label;
   const handle = document.createElement('div');
   handle.className = 'handle';
   node.append(body, tag, handle);
@@ -553,17 +553,16 @@ function renderPropertiesPanel() {
     createButton('Delete', deleteSelectedElement, 'danger'));
   propertiesPanel.append(actions);
 
-  const layoutFieldset = appendFieldset('Layout (grid cells)', [['name', 'Name', 'text'], ['column', 'Column', 'number'], ['row', 'Row', 'number'],
+  for (const sectionKey of sectionKeysForKind(definition.kind)) {
+    const [title, fields] = FIELD_SECTIONS[sectionKey];
+    appendFieldset(title, fields, element.attributes, () => onElementChanged(element));
+  }
+  const layoutFieldset = appendFieldset('Layout (grid cells)', [['name', 'Name (ID for AI)', 'text'], ['column', 'Column', 'number'], ['row', 'Row', 'number'],
     ['columnSpan', 'Width (cols)', 'number'], ['rowSpan', 'Height (rows)', 'number'], ['zIndex', 'Layer (z)', 'number']], element, () => onElementChanged(element));
   const pixelReadout = createNode('div', 'muted', '', { marginTop: '4px' });
   pixelReadout.id = 'pixel-readout';
   layoutFieldset.append(pixelReadout);
   updatePixelReadout(element);
-
-  for (const sectionKey of sectionKeysForKind(definition.kind)) {
-    const [title, fields] = FIELD_SECTIONS[sectionKey];
-    appendFieldset(title, fields, element.attributes, () => onElementChanged(element));
-  }
 }
 function updatePixelReadout(element) {
   const readout = $('pixel-readout');
