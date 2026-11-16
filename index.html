@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>UI Template Maker</title>
+<!-- Roboto and Inter aren't installed on most PCs; the other listed fonts ship with Windows.
+     shortcut: needs internet on first load (then browser cache), embed the font files if offline use matters. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap">
 <style>
 :root{--bg:#0f1115;--panel:#171a21;--panel2:#1e222b;--line:#2a2f3a;--text:#d7dbe3;--muted:#8a93a3;--accent:#4f8cff}
 *{box-sizing:border-box}
@@ -40,7 +45,7 @@ aside{background:var(--panel);overflow:auto}
 main{overflow:auto;display:flex;padding:28px}
 #stage{position:relative;margin:auto;flex:none;box-shadow:0 0 0 1px var(--line),0 10px 40px rgba(0,0,0,.5)}
 /* grid drawn above elements so opaque elements (dialogs, panels) don't hide it */
-#stage.show-grid::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:2147483647;background-size:inherit;background-image:linear-gradient(to right,rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.07) 1px,transparent 1px)}
+#stage.show-grid::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:1000000;background-size:inherit;background-image:linear-gradient(to right,rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.07) 1px,transparent 1px)}
 .el{position:absolute;cursor:move;user-select:none;touch-action:none}
 .el.selected{outline:2px solid var(--accent);outline-offset:1px}
 .el-body{position:absolute;inset:0;display:flex;gap:.5em;overflow:hidden;padding:0 .6em;white-space:pre;line-height:1.15}
@@ -54,6 +59,8 @@ main{overflow:auto;display:flex;padding:28px}
 .el:hover .el-tag,.el.selected .el-tag{display:block}
 .handle{position:absolute;right:-6px;bottom:-6px;width:11px;height:11px;background:var(--accent);border:2px solid #fff;border-radius:2px;cursor:nwse-resize;display:none}
 .el.selected .handle{display:block}
+.marquee{position:absolute;border:1px dashed var(--accent);background:rgba(79,140,255,.12);pointer-events:none;z-index:1000001}
+.inline-editor{position:absolute;z-index:1000001;background:#0b0d12;border:2px solid var(--accent);border-radius:4px;padding:0 6px;resize:none;outline:none;line-height:1.2;min-height:1.6em;min-width:60px}
 .drop-preview{position:absolute;background:rgba(79,140,255,.18);outline:1px dashed var(--accent);pointer-events:none}
 #props{border-left:1px solid var(--line);padding:10px 12px 24px}
 #props h3{margin:0;color:#fff;font-size:15px}
@@ -304,7 +311,7 @@ let copiedStyleAttributes = null;
 const UI_TEMPLATE_MAKER_UNDO_LIMIT = 100;
 const UI_TEMPLATE_MAKER_UNDO_MERGE_MILLISECONDS = 500; // rapid edits (typing, held arrow) become one undo step
 let undoSnapshots = [], redoSnapshots = [], lastSavedSnapshot = JSON.stringify(state), lastSaveTime = 0;
-let selectedElementId = null, zoomMode = '1', zoom = 1, paletteFilter = 'all', paletteSearchText = '';
+let selectedElementId = null, selectedElementIds = [], zoomMode = '1', zoom = 1, paletteFilter = 'all', paletteSearchText = '';
 
 function createEmptyState() {
   return { projectName: 'My layout', targetPlatform: 'any', canvasWidth: 1920, canvasHeight: 1080, columns: 48, rows: 27, canvasBackground: '#111318', showGrid: true, elements: [], nextElementNumber: 1 };
@@ -379,7 +386,7 @@ function moveSnapshotBetweenStacks(sourceStack, targetStack) {
   lastSavedSnapshot = sourceStack.pop();
   lastSaveTime = 0;
   state = JSON.parse(lastSavedSnapshot);
-  if (!findElementById(selectedElementId)) selectedElementId = null;
+  setSelectionWithoutRendering(selectedElementIds.filter(findElementById));
   writeSnapshotToStorage(lastSavedSnapshot);
   renderEverything();
   updateUndoRedoButtons();
@@ -415,7 +422,7 @@ function addElementFromCatalog(type, column, row) {
   state.nextElementNumber++;
   clampElementToGrid(element);
   state.elements.push(element);
-  selectedElementId = element.id;
+  setSelectionWithoutRendering([element.id]);
   saveState(); renderStage(); renderPropertiesPanel();
 }
 
@@ -458,7 +465,7 @@ function refreshElementNode(element) {
 function buildElementNode(element) {
   const definition = findElementDefinition(element.type), attributes = element.attributes;
   const node = document.createElement('div');
-  node.className = 'el' + (element.id === selectedElementId ? ' selected' : '');
+  node.className = 'el' + (selectedElementIds.includes(element.id) ? ' selected' : '');
   node.dataset.id = element.id;
   positionElementNode(node, element);
 
@@ -637,6 +644,7 @@ function renderPropertiesPanel() {
   if (!element) { renderElementOutline(); return; }
   const definition = findElementDefinition(element.type);
   propertiesPanel.append(createNode('h3', '', definition.label), createNode('div', 'muted', `${platformNamesForGroups(definition.groups)} · ${definition.kind}`));
+  if (selectedElementIds.length > 1) propertiesPanel.append(createNode('p', '', `${selectedElementIds.length} elements selected — drag or arrows move all, Del deletes all. Settings below are for the last one.`, { color: 'var(--accent)' }));
   const actions = createNode('div', 'actions');
   actions.append(
     createButton('Duplicate', duplicateSelectedElement),
@@ -673,6 +681,7 @@ function updatePixelReadout(element) {
 function renderElementOutline() {
   propertiesPanel.append(createNode('h3', '', 'Layout'),
     createNode('p', 'muted', 'Drag elements from the left onto the grid. Drag to move, corner handle to resize.'),
+    createNode('p', 'muted', 'Drag on empty space (or Shift+drag anywhere) to select several. Double-click an element to edit its text.'),
     createNode('p', 'muted', 'Keys: Ctrl+Z undo · Ctrl+Y redo · Del delete · Arrows move · Shift+Arrows resize · Ctrl+D duplicate · Esc deselect'));
   const fieldset = createNode('fieldset');
   fieldset.append(createNode('legend', '', `Elements (${state.elements.length})`));
@@ -687,14 +696,21 @@ function onElementChanged(element) {
   updatePixelReadout(element);
   saveState();
 }
-function selectElement(id) {
-  selectedElementId = id;
-  stage.querySelectorAll('.el').forEach(node => node.classList.toggle('selected', node.dataset.id === id));
+// selectedElementId is the primary selection (shown in the properties panel); selectedElementIds holds all selected.
+function setSelectionWithoutRendering(ids) {
+  selectedElementIds = ids;
+  selectedElementId = ids.at(-1) ?? null;
+}
+function setSelection(ids) {
+  setSelectionWithoutRendering(ids);
+  stage.querySelectorAll('.el').forEach(node => node.classList.toggle('selected', ids.includes(node.dataset.id)));
   renderPropertiesPanel();
 }
+const selectElement = id => setSelection(id ? [id] : []);
+const selectedElements = () => selectedElementIds.map(findElementById).filter(Boolean);
 function deleteSelectedElement() {
-  state.elements = state.elements.filter(element => element.id !== selectedElementId);
-  selectedElementId = null;
+  state.elements = state.elements.filter(element => !selectedElementIds.includes(element.id));
+  setSelectionWithoutRendering([]);
   saveState(); renderStage(); renderPropertiesPanel();
 }
 function duplicateSelectedElement() {
@@ -707,19 +723,37 @@ function duplicateSelectedElement() {
   copy.zIndex = Math.max(...state.elements.map(other => other.zIndex)) + 1;
   clampElementToGrid(copy);
   state.elements.push(copy);
-  selectedElementId = copy.id;
+  setSelectionWithoutRendering([copy.id]);
   saveState(); renderStage(); renderPropertiesPanel();
 }
 
 /* ---------- Canvas interaction ---------- */
+const nodeOfElement = element => stage.querySelector(`[data-id="${element.id}"]`);
+// Moves elements together from their start positions; the delta is limited so none leaves the grid.
+function moveElementsFromStartPositions(elements, startPositions, columnDelta, rowDelta) {
+  for (const element of elements) {
+    const start = startPositions.get(element.id);
+    columnDelta = clamp(columnDelta, -start.column, state.columns - element.columnSpan - start.column);
+    rowDelta = clamp(rowDelta, -start.row, state.rows - element.rowSpan - start.row);
+  }
+  for (const element of elements) {
+    const start = startPositions.get(element.id);
+    element.column = start.column + columnDelta;
+    element.row = start.row + rowDelta;
+    positionElementNode(nodeOfElement(element), element);
+  }
+}
+const startPositionsOf = elements => new Map(elements.map(element => [element.id, { column: element.column, row: element.row }]));
 stage.addEventListener('pointerdown', event => {
+  if (event.button !== 0 || event.target.closest('.inline-editor')) return;
   const node = event.target.closest('.el');
-  if (!node) { selectElement(null); return; }
+  if (!node || event.shiftKey) { startMarqueeSelection(event, node); return; }
   event.preventDefault();
   const element = findElementById(node.dataset.id);
-  if (selectedElementId !== element.id) selectElement(element.id);
+  if (!selectedElementIds.includes(element.id)) selectElement(element.id);
   const isResizing = event.target.classList.contains('handle');
-  const start = { x: event.clientX, y: event.clientY, column: element.column, row: element.row, columnSpan: element.columnSpan, rowSpan: element.rowSpan };
+  const start = { x: event.clientX, y: event.clientY, columnSpan: element.columnSpan, rowSpan: element.rowSpan };
+  const movingElements = selectedElements(), startPositions = startPositionsOf(movingElements);
   node.setPointerCapture(event.pointerId);
   const onPointerMove = moveEvent => {
     const columnDelta = Math.round((moveEvent.clientX - start.x) / (cellWidthPx() * zoom));
@@ -727,11 +761,10 @@ stage.addEventListener('pointerdown', event => {
     if (isResizing) {
       element.columnSpan = clamp(start.columnSpan + columnDelta, 1, state.columns - element.column);
       element.rowSpan = clamp(start.rowSpan + rowDelta, 1, state.rows - element.row);
+      positionElementNode(node, element);
     } else {
-      element.column = clamp(start.column + columnDelta, 0, state.columns - element.columnSpan);
-      element.row = clamp(start.row + rowDelta, 0, state.rows - element.rowSpan);
+      moveElementsFromStartPositions(movingElements, startPositions, columnDelta, rowDelta);
     }
-    positionElementNode(node, element);
     updatePixelReadout(element);
   };
   const onPointerUp = () => {
@@ -742,6 +775,75 @@ stage.addEventListener('pointerdown', event => {
   node.addEventListener('pointermove', onPointerMove);
   node.addEventListener('pointerup', onPointerUp);
 });
+// Selects elements fully inside the dragged rectangle; Shift adds to the selection, Shift+click toggles one element.
+function startMarqueeSelection(event, nodeUnderPointer) {
+  event.preventDefault();
+  const stageRectangle = stage.getBoundingClientRect();
+  const startX = event.clientX - stageRectangle.left, startY = event.clientY - stageRectangle.top;
+  const marquee = createNode('div', 'marquee');
+  stage.append(marquee);
+  stage.setPointerCapture(event.pointerId);
+  let rectangle = { left: startX, top: startY, right: startX, bottom: startY };
+  const onPointerMove = moveEvent => {
+    const x = moveEvent.clientX - stageRectangle.left, y = moveEvent.clientY - stageRectangle.top;
+    rectangle = { left: Math.min(startX, x), top: Math.min(startY, y), right: Math.max(startX, x), bottom: Math.max(startY, y) };
+    Object.assign(marquee.style, { left: rectangle.left + 'px', top: rectangle.top + 'px', width: rectangle.right - rectangle.left + 'px', height: rectangle.bottom - rectangle.top + 'px' });
+  };
+  const onPointerUp = () => {
+    stage.removeEventListener('pointermove', onPointerMove);
+    stage.removeEventListener('pointerup', onPointerUp);
+    marquee.remove();
+    const wasClick = rectangle.right - rectangle.left < 3 && rectangle.bottom - rectangle.top < 3;
+    if (wasClick) {
+      if (!event.shiftKey || !nodeUnderPointer) return selectElement(null);
+      const id = nodeUnderPointer.dataset.id;
+      return setSelection(selectedElementIds.includes(id) ? selectedElementIds.filter(other => other !== id) : [...selectedElementIds, id]);
+    }
+    const cellWidth = cellWidthPx() * zoom, cellHeight = cellHeightPx() * zoom;
+    const insideIds = state.elements.filter(element =>
+      element.column * cellWidth >= rectangle.left && (element.column + element.columnSpan) * cellWidth <= rectangle.right &&
+      element.row * cellHeight >= rectangle.top && (element.row + element.rowSpan) * cellHeight <= rectangle.bottom).map(element => element.id);
+    setSelection(event.shiftKey ? [...new Set([...selectedElementIds, ...insideIds])] : insideIds);
+  };
+  stage.addEventListener('pointermove', onPointerMove);
+  stage.addEventListener('pointerup', onPointerUp);
+}
+
+/* ---------- Inline text editing (double-click) ---------- */
+const INLINE_EDITED_ATTRIBUTE_BY_KIND = { text: 'text', button: 'text', container: 'text', toggle: 'text', media: 'text', list: 'items', input: 'value', icon: 'glyph', image: 'altText' };
+stage.addEventListener('dblclick', event => {
+  const node = event.target.closest('.el');
+  if (!node) return;
+  const element = findElementById(node.dataset.id);
+  const attributeKey = INLINE_EDITED_ATTRIBUTE_BY_KIND[findElementDefinition(element.type).kind];
+  if (attributeKey) openInlineTextEditor(element, node, attributeKey);
+});
+// Enter saves, Shift+Enter new line, Esc cancels, clicking away saves.
+function openInlineTextEditor(element, node, attributeKey) {
+  const attributes = element.attributes;
+  const editor = createNode('textarea', 'inline-editor', undefined, {
+    left: node.style.left, top: node.style.top, width: node.style.width, height: node.style.height,
+    fontFamily: attributes.fontFamily, fontSize: attributes.fontSize * zoom + 'px', fontWeight: attributes.fontWeight,
+    color: attributes.textColor, textAlign: attributes.textAlign,
+  });
+  editor.value = attributes[attributeKey] ?? '';
+  stage.append(editor);
+  editor.focus(); editor.select();
+  let isFinished = false;
+  const finishEditing = shouldSave => {
+    if (isFinished) return;
+    isFinished = true;
+    editor.remove();
+    if (!shouldSave || editor.value === String(attributes[attributeKey] ?? '')) return;
+    attributes[attributeKey] = editor.value;
+    onElementChanged(element); renderPropertiesPanel();
+  };
+  editor.addEventListener('keydown', keyEvent => {
+    if (keyEvent.key === 'Enter' && !keyEvent.shiftKey) { keyEvent.preventDefault(); finishEditing(true); }
+    else if (keyEvent.key === 'Escape') { keyEvent.preventDefault(); finishEditing(false); }
+  });
+  editor.addEventListener('blur', () => finishEditing(true));
+}
 function gridCellAtClientPoint(clientX, clientY) {
   const rectangle = stage.getBoundingClientRect();
   return {
@@ -769,9 +871,12 @@ document.addEventListener('keydown', event => {
   const arrowDeltas = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[event.key];
   if (!arrowDeltas) return;
   event.preventDefault();
-  if (event.shiftKey) { element.columnSpan += arrowDeltas[0]; element.rowSpan += arrowDeltas[1]; }
-  else { element.column += arrowDeltas[0]; element.row += arrowDeltas[1]; }
-  onElementChanged(element);
+  if (event.shiftKey) { element.columnSpan += arrowDeltas[0]; element.rowSpan += arrowDeltas[1]; onElementChanged(element); }
+  else {
+    const movingElements = selectedElements();
+    moveElementsFromStartPositions(movingElements, startPositionsOf(movingElements), ...arrowDeltas);
+    saveState();
+  }
   renderPropertiesPanel();
 });
 window.addEventListener('resize', () => { if (zoomMode === 'fit') renderStage(); });
@@ -894,7 +999,7 @@ $('undo-change').addEventListener('click', undoLastChange);
 $('redo-change').addEventListener('click', redoLastChange);
 $('new-layout').addEventListener('click', () => {
   if (state.elements.length && !confirm('Clear the current layout?')) return;
-  state = createEmptyState(); selectedElementId = null;
+  state = createEmptyState(); setSelectionWithoutRendering([]);
   saveState(); renderEverything();
 });
 $('export-layout').addEventListener('click', () => downloadTextFile(fileNameForProject('.layout.json'), JSON.stringify(buildExportData(), null, 2)));
@@ -911,7 +1016,7 @@ $('import-file').addEventListener('change', async event => {
   if (!file) return;
   try { importLayoutData(JSON.parse(await file.text())); }
   catch (error) { alert('Import failed: ' + error.message); return; }
-  selectedElementId = null; saveState(); renderEverything();
+  setSelectionWithoutRendering([]); saveState(); renderEverything();
 });
 $('platform-filter').addEventListener('click', event => {
   const button = event.target.closest('button');
