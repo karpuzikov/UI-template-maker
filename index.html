@@ -111,6 +111,7 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-radius:3px;padd
     <span class="spacer"></span>
     <button id="undo-change" title="Undo (Ctrl+Z)" disabled>↶ Undo</button>
     <button id="redo-change" title="Redo (Ctrl+Y)" disabled>↷ Redo</button>
+    <button id="remove-empty-elements" title="Delete text, button, input, list and icon elements that show nothing">Cleanup</button>
     <button id="new-layout" class="danger">New</button>
     <button id="import-layout">Import</button>
     <input id="import-file" type="file" accept=".json,application/json" hidden>
@@ -1103,6 +1104,24 @@ $('grid-cell-size').addEventListener('change', event => {
 $('canvas-background').addEventListener('input', event => { state.canvasBackground = event.target.value; saveState(); renderStage(); });
 $('show-grid').addEventListener('change', event => { state.showGrid = event.target.checked; saveState(); renderStage(); });
 $('zoom-mode').addEventListener('change', event => { zoomMode = event.target.value; renderStage(); });
+// Empty = nothing visible. Containers, dividers, images, media, ranges and toggles always draw something, so they stay.
+function isElementEmpty(element) {
+  const attributes = element.attributes, isBlank = value => !String(value ?? '').trim();
+  switch (findElementDefinition(element.type).kind) {
+    case 'text': case 'button': case 'icon': return isBlank(attributes.text) && isBlank(attributes.glyph);
+    case 'input': return isBlank(attributes.value) && isBlank(attributes.placeholder) && isBlank(attributes.glyph);
+    case 'list': return isBlank(attributes.items);
+    default: return false;
+  }
+}
+$('remove-empty-elements').addEventListener('click', () => {
+  const emptyElements = state.elements.filter(isElementEmpty);
+  if (!emptyElements.length) { alert('No empty elements found.'); return; }
+  if (!confirm(`Delete ${emptyElements.length} empty element(s)?\n\n${emptyElements.map(element => element.name).join('\n')}\n\n(Ctrl+Z undoes this)`)) return;
+  state.elements = state.elements.filter(element => !isElementEmpty(element));
+  setSelectionWithoutRendering(selectedElementIds.filter(findElementById));
+  saveState(); renderEverything();
+});
 $('undo-change').addEventListener('click', undoLastChange);
 $('redo-change').addEventListener('click', redoLastChange);
 $('new-layout').addEventListener('click', () => {
